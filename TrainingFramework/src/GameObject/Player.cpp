@@ -1,10 +1,11 @@
 #include "Player.h"
 #include "GameManager/ResourceManagers.h"
 
-Player::Player(std::shared_ptr<Models>& model, std::shared_ptr<Shaders>& shader, std::shared_ptr<Texture>& texture)
+Player::Player(std::shared_ptr<Models>& model, std::shared_ptr<Shaders>& shader, std::shared_ptr<Camera>& camera, std::shared_ptr<Texture>& texture)
 	:Sprite2D(model, shader, texture)
 {
-	m_Position = Vector2(0, 0);
+	dir = Direction::IDLE;
+	m_speed = 100;
 	m_HP = 100;
 	m_MP = 100;
 	m_SizeCollider = 30;
@@ -15,14 +16,9 @@ Player::~Player()
 {
 }
 
-Vector2 Player::GetPosition()
+void Player::Move(Direction d)
 {
-	return m_Position;
-}
-
-void Player::SetPosition(Vector2 pos)
-{
-	m_Position = pos;
+	dir = d;
 }
 
 void Player::SetColliderSize(float size)
@@ -35,11 +31,35 @@ float Player::GetColliderSize()
 	return m_SizeCollider;
 }
 
+bool Player::IsAlive()
+{
+	return m_isAlive;
+}
+
 void Player::Update(GLfloat deltatime)
 {
 	if (!m_isAlive)
 		return;
+	Vector2 pos = Get2DPosition();
 
+	switch (dir) {
+	case IDLE:
+		break;
+	case LEFT:
+		pos.x -= m_speed * deltatime;
+		break;
+	case RIGHT:
+		pos.x += m_speed * deltatime;
+		break;
+	case UP:
+		pos.y -= m_speed * deltatime;
+		break;
+	case DOWN:
+		pos.y += m_speed * deltatime;
+		break;
+	}
+
+	Set2DPosition(pos);
 }
 
 

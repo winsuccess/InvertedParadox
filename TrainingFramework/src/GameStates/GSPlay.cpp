@@ -8,6 +8,7 @@
 #include "Sprite2D.h"
 #include "Sprite3D.h"
 #include "Text.h"
+#include <iostream>
 
 GSPlay::GSPlay()
 {
@@ -22,6 +23,13 @@ GSPlay::~GSPlay()
 
 void GSPlay::Init()
 {
+	//Camera
+	Vector3 CameraPos(10, 40, 40);
+	Vector3 TargetPos(0, 0, 0);
+	float fFovY = 0.7f;
+	m_Camera = std::make_shared<Camera>();
+	m_Camera->Init(CameraPos, TargetPos, fFovY, (GLfloat)screenwidth / screenheight, 1.0f, 5000.0f, 1.0f);
+
 	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D");
 	auto shader = ResourceManagers::GetInstance()->GetShader("TextureShader");
 
@@ -33,7 +41,7 @@ void GSPlay::Init()
 
 	//Player
 	texture = ResourceManagers::GetInstance()->GetTexture("play_player");
-	m_Player = std::make_shared<Player>(model, shader, texture);
+	m_Player = std::make_shared<Player>(model, shader, m_Camera, texture);
 	m_Player->Set2DPosition(screenwidth / 2, screenheight / 2);
 	m_Player->SetSize(125, 60);
 
@@ -128,7 +136,22 @@ void GSPlay::HandleEvents()
 
 void GSPlay::HandleKeyEvents(int key, bool bIsPressed)
 {
-
+	if (key == KEY_LEFT) {
+		std::cout << "Move left";
+		m_Player->Move(Player::Direction::LEFT);
+	}
+	if (key == KEY_RIGHT) {
+		std::cout << "Move right";
+		m_Player->Move(Player::Direction::RIGHT);
+	}
+	if (key == KEY_UP) {
+		std::cout << "Move up";
+		m_Player->Move(Player::Direction::UP);
+	}
+	if (key == KEY_DOWN) {
+		std::cout << "Move down";
+		m_Player->Move(Player::Direction::DOWN);
+	}
 }
 
 void GSPlay::HandleTouchEvents(int x, int y, bool bIsPressed)
@@ -147,6 +170,10 @@ void GSPlay::Update(float deltaTime)
 	{
 		it->Update(deltaTime);
 	}
+
+	if(m_Player->IsAlive())
+		m_Player->Update(deltaTime);
+
 }
 
 void GSPlay::Draw()
