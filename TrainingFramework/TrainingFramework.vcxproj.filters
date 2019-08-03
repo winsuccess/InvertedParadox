@@ -16,6 +16,12 @@
     <Filter Include="TrainingFramework\src\GameStates">
       <UniqueIdentifier>{2a875364-1a2b-4ea6-a6fe-716988208916}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TrainingFramework\src\Helper">
+      <UniqueIdentifier>{4a3b4942-8666-4938-a3b9-0b2b823e3aca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TrainingFramework\src\DualStates">
+      <UniqueIdentifier>{5f4bea24-22d9-4e32-af6f-9707f0c56f7c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp">
@@ -69,6 +75,15 @@
     <ClCompile Include="src\GameObject\GameButton.cpp">
       <Filter>TrainingFramework\src\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="src\GameObject\Player.cpp">
+      <Filter>TrainingFramework\src\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameManager\SoundManager.cpp">
+      <Filter>TrainingFramework\src\GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Enemy.cpp">
+      <Filter>TrainingFramework\src\GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h">
@@ -76,9 +91,6 @@
     </ClInclude>
     <ClInclude Include="src\GameConfig.h">
       <Filter>TrainingFramework\src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\GameManager\Singleton.h">
-      <Filter>TrainingFramework\src\GameManager</Filter>
     </ClInclude>
     <ClInclude Include="src\GameObject\BaseObject.h">
       <Filter>TrainingFramework\src\GameObject</Filter>
@@ -126,6 +138,24 @@
       <Filter>TrainingFramework\src\GameManager</Filter>
     </ClInclude>
     <ClInclude Include="src\GameObject\GameButton.h">
+      <Filter>TrainingFramework\src\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Helper\SafeQueue.h">
+      <Filter>TrainingFramework\src\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Helper\Singleton.h">
+      <Filter>TrainingFramework\src\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Helper\ThreadPool.h">
+      <Filter>TrainingFramework\src\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Player.h">
+      <Filter>TrainingFramework\src\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameManager\SoundManager.h">
+      <Filter>TrainingFramework\src\GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Enemy.h">
       <Filter>TrainingFramework\src\GameObject</Filter>
     </ClInclude>
   </ItemGroup>

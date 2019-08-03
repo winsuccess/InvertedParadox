@@ -7,7 +7,7 @@
 #include "TGA.h"
 #include "MemoryOperators.h"
 #include "GameConfig.h"
-#include "Singleton.h"
+#include "Helper/Singleton.h"
 #include <list>
 #include <vector>
 #include <sstream>

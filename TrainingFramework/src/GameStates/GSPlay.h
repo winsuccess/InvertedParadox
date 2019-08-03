@@ -1,6 +1,7 @@
 #pragma once
 #include "gamestatebase.h"
 #include "GameButton.h"
+#include "Player.h"
 
 class Sprite2D;
 class Sprite3D;
@@ -36,6 +37,6 @@ private:
 	std::list<std::shared_ptr<GameButton>>	m_listButton;
 	std::shared_ptr<Sprite2D> m_healthBar;
 	std::shared_ptr<Sprite2D> m_manaBar;
-
+	std::shared_ptr<Player> m_Player;
 };
 

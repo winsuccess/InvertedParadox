@@ -1,1 +1,14 @@
-﻿  TrainingFramework.vcxproj -> D:\Gameloft Documents\InvertedParadox\\BIN-Nvidia\TrainingFramework.exe
+﻿D:\Visual Studio\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(452,5): warning MSB8028: The intermediate directory (Debug-Nvidia\) contains files shared from another project (TrainingFramework.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  cl : Command line warning D9035 : option 'Gm' has been deprecated and will be removed in a future release
+  GSPlay.cpp
+D:\Gameloft Documents\InvertedParadox\TrainingFramework\src\GameStates\GSPlay.cpp(51,29): warning C4244:  'argument': conversion from 'int' to 'GLfloat', possible loss of data
+D:\Gameloft Documents\InvertedParadox\TrainingFramework\src\GameStates\GSPlay.cpp(58,27): warning C4244:  'argument': conversion from 'int' to 'GLfloat', possible loss of data
+D:\Gameloft Documents\InvertedParadox\TrainingFramework\src\GameStates\GSPlay.cpp(66,24): warning C4244:  'argument': conversion from 'int' to 'GLfloat', possible loss of data
+D:\Gameloft Documents\InvertedParadox\TrainingFramework\src\GameStates\GSPlay.cpp(77,24): warning C4244:  'argument': conversion from 'int' to 'GLfloat', possible loss of data
+D:\Gameloft Documents\InvertedParadox\TrainingFramework\src\GameStates\GSPlay.cpp(88,24): warning C4244:  'argument': conversion from 'int' to 'GLfloat', possible loss of data
+  Generating Code...
+  Font.cpp
+D:\Gameloft Documents\InvertedParadox\TrainingFramework\src\GameStates\GSPlay.cpp(99,24): warning C4244:  'argument': conversion from 'int' to 'GLfloat', possible loss of data
+D:\Gameloft Documents\InvertedParadox\TrainingFramework\src\GameStates\GSPlay.cpp(99,24): warning C4244: Skipping... (no relevant changes detected)
+Application.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+  TrainingFramework.vcxproj -> D:\Gameloft Documents\InvertedParadox\\BIN-Nvidia\InvertedParadox.exe

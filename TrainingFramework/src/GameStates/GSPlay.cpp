@@ -26,19 +26,17 @@ void GSPlay::Init()
 	auto shader = ResourceManagers::GetInstance()->GetShader("TextureShader");
 
 	//BackGround
-	auto texture = ResourceManagers::GetInstance()->GetTexture("bg_play");
+	auto texture = ResourceManagers::GetInstance()->GetTexture("play_map");
 	m_BackGround = std::make_shared<Sprite2D>(model, shader, texture);
 	m_BackGround->Set2DPosition(screenwidth / 2, screenheight / 2);
-	m_BackGround->SetSize(screenwidth, screenheight);
+	m_BackGround->SetSize(1667, screenheight);
 
-	//Player Name
-	//shader = ResourceManagers::GetInstance()->GetShader("TextShader");
-	//std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("arialbd");
-	//m_BackGround = std::make_shared<Sprite2D>(model, shader, texture);
-	//m_BackGround->Set2DPosition(screenwidth / 2, screenheight / 2);
-	//m_BackGround->SetSize(screenwidth, screenheight);
+	//Player
+	texture = ResourceManagers::GetInstance()->GetTexture("play_player");
+	m_Player = std::make_shared<Player>(model, shader, texture);
+	m_Player->Set2DPosition(screenwidth / 2, screenheight / 2);
+	m_Player->SetSize(125, 60);
 
-	shader = ResourceManagers::GetInstance()->GetShader("TextureShader");
 	//Health Bar
 	int hAlignment = 120;
 	texture = ResourceManagers::GetInstance()->GetTexture("play_healthbar");
@@ -97,6 +95,13 @@ void GSPlay::Init()
 		//
 		});
 	m_listButton.push_back(button);
+
+	//Player Name
+	//shader = ResourceManagers::GetInstance()->GetShader("TextShader");
+	//std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("arialbd");
+	//m_BackGround = std::make_shared<Sprite2D>(model, shader, texture);
+	//m_BackGround->Set2DPosition(screenwidth / 2, screenheight / 2);
+	//m_BackGround->SetSize(screenwidth, screenheight);
 }
 
 void GSPlay::Exit()
@@ -123,7 +128,7 @@ void GSPlay::HandleEvents()
 
 void GSPlay::HandleKeyEvents(int key, bool bIsPressed)
 {
-	
+
 }
 
 void GSPlay::HandleTouchEvents(int x, int y, bool bIsPressed)
@@ -146,10 +151,15 @@ void GSPlay::Update(float deltaTime)
 
 void GSPlay::Draw()
 {
+	//BG
 	m_BackGround->Draw();
+
+	//Player
+	m_Player->Draw();
+
+	//UI
 	m_healthBar->Draw();
 	m_manaBar->Draw();
-	//m_score->Draw();
 	for (auto it : m_listButton)
 	{
 		it->Draw();
