@@ -198,7 +198,7 @@ void GSPlay::Update(float deltaTime)
 	if (m_Player->IsAlive()) {
 		m_Player->Update(deltaTime);
 		if (m_Player->OnTriggerDualZone(m_listZone))
-			GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Menu);
+			GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Match);
 	}
 
 }
