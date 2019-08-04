@@ -27,7 +27,7 @@ void GSMenu::Init()
 	texture = ResourceManagers::GetInstance()->GetTexture("menu_button_start");
 	std::shared_ptr<GameButton> button = std::make_shared<GameButton>(model, shader, texture);
 	button->Set2DPosition(screenwidth / 2, 400);
-	button->SetSize(176, 22);
+	button->SetSize(123.0f, 37.5f);
 	button->SetOnClick([]() {
 		GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Play);
 		});

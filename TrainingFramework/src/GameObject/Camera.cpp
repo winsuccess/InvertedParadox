@@ -10,6 +10,7 @@ Camera::Camera()
 	m_MatView.SetZero();
 	m_MatProjection.SetZero();
 	m_isChange	= true;
+	
 }
 Camera::~Camera()
 {

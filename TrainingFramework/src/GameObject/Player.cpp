@@ -1,14 +1,15 @@
 #include "Player.h"
+#include "DualZone.h"
 #include "GameManager/ResourceManagers.h"
 
-Player::Player(std::shared_ptr<Models>& model, std::shared_ptr<Shaders>& shader, std::shared_ptr<Camera>& camera, std::shared_ptr<Texture>& texture)
+Player::Player(std::shared_ptr<Models>& model, std::shared_ptr<Shaders>& shader, std::shared_ptr<Texture>& texture)
 	:Sprite2D(model, shader, texture)
 {
 	dir = Direction::IDLE;
 	m_speed = 100;
 	m_HP = 100;
 	m_MP = 100;
-	m_SizeCollider = 30;
+	m_SizeCollider = 20;
 	m_isAlive = true;
 }
 
@@ -34,6 +35,28 @@ float Player::GetColliderSize()
 bool Player::IsAlive()
 {
 	return m_isAlive;
+}
+
+bool Player::OnTriggerDualZone(std::vector<std::shared_ptr<DualZone>> listZone)
+{
+	Vector2 pos = Get2DPosition();
+	for (auto zone : listZone)
+	{
+		//if (//zone->IsActive())
+		{
+			if (Distance(pos, zone->Get2DPosition()) < m_SizeCollider + zone->GetColliderSize())
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+
+}
+
+float Player::Distance(Vector2 pos, Vector2 target)
+{
+	return sqrt((pos.x - target.x) * (pos.x - target.x) + (pos.y - target.y) * (pos.y - target.y));
 }
 
 void Player::Update(GLfloat deltatime)

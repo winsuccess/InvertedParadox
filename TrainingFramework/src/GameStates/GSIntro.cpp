@@ -19,13 +19,17 @@ GSIntro::~GSIntro()
 void GSIntro::Init()
 {
 	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D");
-
-	//logo
 	auto shader = ResourceManagers::GetInstance()->GetShader("TextureShader");
-	auto texture = ResourceManagers::GetInstance()->GetTexture("px_logo");
+	//background
+	auto texture = ResourceManagers::GetInstance()->GetTexture("intro_bg");
+	m_background = std::make_shared<Sprite2D>(model, shader, texture);
+	m_background->Set2DPosition(screenwidth / 2, screenheight / 2);
+	m_background->SetSize(screenwidth, screenheight);
+	//logo
+	texture = ResourceManagers::GetInstance()->GetTexture("px_logo");
 	m_logo = std::make_shared<Sprite2D>(model, shader, texture);
-	m_logo->Set2DPosition(screenwidth/2, screenheight/2);
-	m_logo->SetSize(screenwidth, screenheight);
+	m_logo->Set2DPosition(screenwidth/2, screenheight/3);
+	m_logo->SetSize(140.0f, 200/1.5f);
 }
 
 void GSIntro::Exit()
@@ -72,5 +76,6 @@ void GSIntro::Update(float deltaTime)
 
 void GSIntro::Draw()
 {
+	m_background->Draw();
 	m_logo->Draw();
 }

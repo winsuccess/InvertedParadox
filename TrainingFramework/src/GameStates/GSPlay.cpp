@@ -24,27 +24,35 @@ GSPlay::~GSPlay()
 void GSPlay::Init()
 {
 	//Camera
-	Vector3 CameraPos(10, 40, 40);
-	Vector3 TargetPos(0, 0, 0);
-	float fFovY = 0.7f;
-	m_Camera = std::make_shared<Camera>();
-	m_Camera->Init(CameraPos, TargetPos, fFovY, (GLfloat)screenwidth / screenheight, 1.0f, 5000.0f, 1.0f);
+	//Vector3 CameraPos(10, 40, 40);
+	//Vector3 TargetPos(0, 0, 0);
+	//float fFovY = 0.7f;
+	//m_Camera = std::make_shared<Camera>();
+	//m_Camera->Init(CameraPos, TargetPos, fFovY, (GLfloat)screenwidth / screenheight, 1.0f, 5000.0f, 1.0f);
 
 	auto model = ResourceManagers::GetInstance()->GetModel("Sprite2D");
 	auto shader = ResourceManagers::GetInstance()->GetShader("TextureShader");
 
-	//BackGround
+	//Background Map
 	auto texture = ResourceManagers::GetInstance()->GetTexture("play_map");
 	m_BackGround = std::make_shared<Sprite2D>(model, shader, texture);
-	m_BackGround->Set2DPosition(screenwidth / 2, screenheight / 2);
+	m_BackGround->Set2DPosition(0, screenheight / 2);
 	m_BackGround->SetSize(1667, screenheight);
 
 	//Player
 	texture = ResourceManagers::GetInstance()->GetTexture("play_player");
-	m_Player = std::make_shared<Player>(model, shader, m_Camera, texture);
-	m_Player->Set2DPosition(screenwidth / 2, screenheight / 2);
-	m_Player->SetSize(125, 60);
+	m_Player = std::make_shared<Player>(model, shader, texture);
+	m_Player->Set2DPosition(screenwidth / 2-60, screenheight / 2-10);
+	m_Player->SetSize(38, 60);
 
+	//DualZone
+	texture = ResourceManagers::GetInstance()->GetTexture("play_zone");
+	std::shared_ptr<DualZone> dz = std::make_shared<DualZone>(model, shader, texture);
+	dz->Set2DPosition(650, 280);
+	dz->SetSize(50, 70);
+	m_listZone.push_back(dz);
+
+#pragma region UIInit
 	//Health Bar
 	int hAlignment = 120;
 	texture = ResourceManagers::GetInstance()->GetTexture("play_healthbar");
@@ -104,6 +112,8 @@ void GSPlay::Init()
 		});
 	m_listButton.push_back(button);
 
+#pragma endregion
+
 	//Player Name
 	//shader = ResourceManagers::GetInstance()->GetShader("TextShader");
 	//std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("arialbd");
@@ -136,21 +146,35 @@ void GSPlay::HandleEvents()
 
 void GSPlay::HandleKeyEvents(int key, bool bIsPressed)
 {
-	if (key == KEY_LEFT) {
-		std::cout << "Move left";
+	//switch (key){
+	//case KEY_LEFT:
+	//		m_Player->Move(Player::Direction::LEFT);
+	//	break;
+	//case KEY_RIGHT:
+	//		m_Player->Move(Player::Direction::RIGHT);
+	//	break;
+	//case KEY_UP:
+	//		m_Player->Move(Player::Direction::UP);
+	//	break;
+	//case KEY_DOWN:
+	//		m_Player->Move(Player::Direction::DOWN);
+	//	break;
+	//default:
+	//	break;
+	//}
+	if(key==KEY_LEFT)
 		m_Player->Move(Player::Direction::LEFT);
-	}
-	if (key == KEY_RIGHT) {
-		std::cout << "Move right";
+	if (key == KEY_RIGHT)
 		m_Player->Move(Player::Direction::RIGHT);
-	}
-	if (key == KEY_UP) {
-		std::cout << "Move up";
+	if (key == KEY_UP)
 		m_Player->Move(Player::Direction::UP);
-	}
-	if (key == KEY_DOWN) {
-		std::cout << "Move down";
+	if (key == KEY_DOWN)
 		m_Player->Move(Player::Direction::DOWN);
+
+	if (!bIsPressed)
+	{
+		std::cout << "Stop";
+		m_Player->Move(Player::Direction::IDLE);
 	}
 }
 
@@ -171,8 +195,11 @@ void GSPlay::Update(float deltaTime)
 		it->Update(deltaTime);
 	}
 
-	if(m_Player->IsAlive())
+	if (m_Player->IsAlive()) {
 		m_Player->Update(deltaTime);
+		if (m_Player->OnTriggerDualZone(m_listZone))
+			GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Menu);
+	}
 
 }
 
@@ -183,6 +210,11 @@ void GSPlay::Draw()
 
 	//Player
 	m_Player->Draw();
+	for (auto it : m_listZone)
+	{
+		it->Draw();
+	}
+	//Zones
 
 	//UI
 	m_healthBar->Draw();
@@ -191,8 +223,4 @@ void GSPlay::Draw()
 	{
 		it->Draw();
 	}
-}
-
-void GSPlay::SetNewPostionForBullet()
-{
 }
