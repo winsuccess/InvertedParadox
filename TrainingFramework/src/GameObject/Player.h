@@ -29,8 +29,6 @@ public:
 private:
 	Vector2 m_TargetPosition;
 	float	m_speed;
-	int		m_HP;
-	int		m_MP;
 	Direction dir;
 	bool	m_isAlive;
 	float	m_SizeCollider;

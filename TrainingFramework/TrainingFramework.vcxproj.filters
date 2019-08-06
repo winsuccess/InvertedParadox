@@ -19,9 +19,6 @@
     <Filter Include="TrainingFramework\src\Helper">
       <UniqueIdentifier>{4a3b4942-8666-4938-a3b9-0b2b823e3aca}</UniqueIdentifier>
     </Filter>
-    <Filter Include="TrainingFramework\src\DualStates">
-      <UniqueIdentifier>{5f4bea24-22d9-4e32-af6f-9707f0c56f7c}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp">
@@ -89,6 +86,12 @@
     </ClCompile>
     <ClCompile Include="src\GameStates\GSMatch.cpp">
       <Filter>TrainingFramework\src\GameStates</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Map.cpp">
+      <Filter>TrainingFramework\src\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameObject\Character.cpp">
+      <Filter>TrainingFramework\src\GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +172,12 @@
     </ClInclude>
     <ClInclude Include="src\GameStates\GSMatch.h">
       <Filter>TrainingFramework\src\GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Map.h">
+      <Filter>TrainingFramework\src\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject\Character.h">
+      <Filter>TrainingFramework\src\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

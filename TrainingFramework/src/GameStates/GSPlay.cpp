@@ -35,7 +35,7 @@ void GSPlay::Init()
 
 	//Background Map
 	auto texture = ResourceManagers::GetInstance()->GetTexture("play_map");
-	m_BackGround = std::make_shared<Sprite2D>(model, shader, texture);
+	m_BackGround = std::make_shared<Map>(model, shader, texture);
 	m_BackGround->Set2DPosition(0, screenheight / 2);
 	m_BackGround->SetSize(1667, screenheight);
 
@@ -47,10 +47,15 @@ void GSPlay::Init()
 
 	//DualZone
 	texture = ResourceManagers::GetInstance()->GetTexture("play_zone");
-	std::shared_ptr<DualZone> dz = std::make_shared<DualZone>(model, shader, texture);
-	dz->Set2DPosition(650, 280);
-	dz->SetSize(50, 70);
-	m_listZone.push_back(dz);
+	std::shared_ptr<DualZone> dz1 = std::make_shared<DualZone>(model, shader, texture);
+	dz1->Set2DPosition(650, 280);
+	dz1->SetSize(50, 70);
+	m_listZone.push_back(dz1);
+
+	std::shared_ptr<DualZone> dz2 = std::make_shared<DualZone>(model, shader, texture);
+	dz2->Set2DPosition(250, 150);
+	dz2->SetSize(50, 70);
+	m_listZone.push_back(dz2);
 
 #pragma region UIInit
 	//Health Bar
@@ -162,10 +167,22 @@ void GSPlay::HandleKeyEvents(int key, bool bIsPressed)
 	//default:
 	//	break;
 	//}
-	if(key==KEY_LEFT)
+	if (key == KEY_LEFT) {
 		m_Player->Move(Player::Direction::LEFT);
-	if (key == KEY_RIGHT)
+		m_BackGround->MoveView(1);
+		for (auto it : m_listZone)
+		{
+			it->MoveView(1);
+		}
+	}
+	if (key == KEY_RIGHT) {
 		m_Player->Move(Player::Direction::RIGHT);
+		m_BackGround->MoveView(-1);
+		for (auto it : m_listZone)
+		{
+			it->MoveView(-1);
+		}
+	}
 	if (key == KEY_UP)
 		m_Player->Move(Player::Direction::UP);
 	if (key == KEY_DOWN)
@@ -175,6 +192,11 @@ void GSPlay::HandleKeyEvents(int key, bool bIsPressed)
 	{
 		std::cout << "Stop";
 		m_Player->Move(Player::Direction::IDLE);
+		m_BackGround->MoveView(0);
+		for (auto it : m_listZone)
+		{
+			it->MoveView(0);
+		}
 	}
 }
 
@@ -197,6 +219,11 @@ void GSPlay::Update(float deltaTime)
 
 	if (m_Player->IsAlive()) {
 		m_Player->Update(deltaTime);
+		//m_BackGround->Update(deltaTime);
+		for (auto it : m_listZone)
+		{
+			it->Update(deltaTime);
+		}
 		if (m_Player->OnTriggerDualZone(m_listZone))
 			GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Match);
 	}

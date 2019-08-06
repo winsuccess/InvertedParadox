@@ -1,6 +1,12 @@
 ﻿D:\Visual Studio\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(452,5): warning MSB8028: The intermediate directory (Debug-Nvidia\) contains files shared from another project (TrainingFramework.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   cl : Command line warning D9035 : option 'Gm' has been deprecated and will be removed in a future release
   GSMatch.cpp
-D:\Gameloft Documents\InvertedParadox\TrainingFramework\src\GameStates\GSMatch.cpp(30,33): warning C4244:  'argument': conversion from 'float' to 'GLint', possible loss of data
-D:\Gameloft Documents\InvertedParadox\TrainingFramework\src\GameStates\GSMatch.cpp(30,25): warning C4244:  'argument': conversion from 'float' to 'GLint', possible loss of data
+D:\Gameloft Documents\InvertedParadox\TrainingFramework\src\GameStates\GSMatch.cpp(47,33): warning C4244:  'argument': conversion from 'float' to 'GLint', possible loss of data
+D:\Gameloft Documents\InvertedParadox\TrainingFramework\src\GameStates\GSMatch.cpp(47,25): warning C4244:  'argument': conversion from 'float' to 'GLint', possible loss of data
+D:\Gameloft Documents\InvertedParadox\TrainingFramework\src\GameStates\GSMatch.cpp(58,31): warning C4244:  'argument': conversion from 'float' to 'GLint', possible loss of data
+D:\Gameloft Documents\InvertedParadox\TrainingFramework\src\GameStates\GSMatch.cpp(58,23): warning C4244:  'argument': conversion from 'float' to 'GLint', possible loss of data
+D:\Gameloft Documents\InvertedParadox\TrainingFramework\src\GameStates\GSMatch.cpp(67,30): warning C4244:  'argument': conversion from 'float' to 'GLint', possible loss of data
+D:\Gameloft Documents\InvertedParadox\TrainingFramework\src\GameStates\GSMatch.cpp(67,22): warning C4244:  'argument': conversion from 'float' to 'GLint', possible loss of data
+D:\Gameloft Documents\InvertedParadox\TrainingFramework\src\GameStates\GSMatch.cpp(76,32): warning C4244:  'argument': conversion from 'float' to 'GLint', possible loss of data
+D:\Gameloft Documents\InvertedParadox\TrainingFramework\src\GameStates\GSMatch.cpp(76,24): warning C4244:  'argument': conversion from 'float' to 'GLint', possible loss of data
   TrainingFramework.vcxproj -> D:\Gameloft Documents\InvertedParadox\\BIN-Nvidia\InvertedParadox.exe

@@ -13,8 +13,12 @@ public:
 	void		SetColliderSize(float size);
 	float		GetColliderSize();
 
+	void MoveView(int d);
+	void Update(GLfloat deltatime);
+
 private:
 
+	int d;
 	float	m_SizeCollider;
 
 

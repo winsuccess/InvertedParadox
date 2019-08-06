@@ -6,9 +6,7 @@ Player::Player(std::shared_ptr<Models>& model, std::shared_ptr<Shaders>& shader,
 	:Sprite2D(model, shader, texture)
 {
 	dir = Direction::IDLE;
-	m_speed = 100;
-	m_HP = 100;
-	m_MP = 100;
+	m_speed = 80;
 	m_SizeCollider = 20;
 	m_isAlive = true;
 }
@@ -69,10 +67,10 @@ void Player::Update(GLfloat deltatime)
 	case IDLE:
 		break;
 	case LEFT:
-		pos.x -= m_speed * deltatime;
+	//	pos.x -= m_speed * deltatime;
 		break;
 	case RIGHT:
-		pos.x += m_speed * deltatime;
+	//	pos.x += m_speed * deltatime;
 		break;
 	case UP:
 		pos.y -= m_speed * deltatime;

@@ -2,6 +2,7 @@
 #include "gamestatebase.h"
 #include "GameButton.h"
 #include "Player.h"
+#include "Map.h"
 #include "DualZone.h"
 
 class Sprite2D;
@@ -31,7 +32,7 @@ public:
 private:
 
 	std::shared_ptr<Camera> m_Camera;
-	std::shared_ptr<Sprite2D> m_BackGround;
+	std::shared_ptr<Map> m_BackGround;
 	std::shared_ptr<Text>  m_score;
 	std::vector<std::shared_ptr<GameButton>>	m_listButton;
 	std::shared_ptr<Sprite2D> m_healthBar;
