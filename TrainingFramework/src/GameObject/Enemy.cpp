@@ -4,7 +4,7 @@
 Enemy::Enemy(std::shared_ptr<Models>& model, std::shared_ptr<Shaders>& shader, std::shared_ptr<Texture>& texture)
 	:Sprite2D(model, shader, texture)
 {
-	m_Position = Vector2(0, 0);
+	damage = 50;
 	m_HP = 100;
 	m_MP = 100;
 	m_isAlive = true;
@@ -14,14 +14,18 @@ Enemy::~Enemy()
 {
 }
 
-Vector2 Enemy::GetPosition()
+void Enemy::SetHp(int x)
 {
-	return m_Position;
+	m_HP += x;
 }
 
-void Enemy::SetPosition(Vector2 pos)
+int Enemy::GetHp()
 {
-	m_Position = pos;
+	return m_HP;
+}
+
+bool Enemy::IsAlive() {
+	return m_isAlive;
 }
 
 

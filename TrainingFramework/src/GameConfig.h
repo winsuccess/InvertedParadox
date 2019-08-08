@@ -92,6 +92,8 @@
 #define KEY_MOVE_RIGHT			68	// key d
 #define KEY_MOVE_FORWARD		87	// key w
 #define KEY_MOVE_BACKWARD		83	// key s
+#define KEY_ENTER				13	// key Enter
+
 
 #elif ANDROID
 

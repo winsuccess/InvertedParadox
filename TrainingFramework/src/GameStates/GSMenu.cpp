@@ -29,7 +29,7 @@ void GSMenu::Init()
 	button->Set2DPosition(screenwidth / 2, 400);
 	button->SetSize(123.0f, 37.5f);
 	button->SetOnClick([]() {
-		GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Play);
+		//GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Play);
 		});
 	m_listButton.push_back(button);
 
@@ -74,7 +74,8 @@ void GSMenu::HandleEvents()
 
 void GSMenu::HandleKeyEvents(int key, bool bIsPressed)
 {
-
+	if(key==KEY_ENTER && bIsPressed)
+		GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Play);
 }
 
 void GSMenu::HandleTouchEvents(int x, int y, bool bIsPressed)

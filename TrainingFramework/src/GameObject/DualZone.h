@@ -14,7 +14,7 @@ public:
 	float		GetColliderSize();
 
 	void MoveView(int d);
-	void Update(GLfloat deltatime);
+	void Update(GLfloat deltatime) override;
 
 private:
 

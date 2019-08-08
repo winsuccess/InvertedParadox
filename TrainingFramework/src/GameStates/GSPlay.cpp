@@ -151,43 +151,28 @@ void GSPlay::HandleEvents()
 
 void GSPlay::HandleKeyEvents(int key, bool bIsPressed)
 {
-	//switch (key){
-	//case KEY_LEFT:
-	//		m_Player->Move(Player::Direction::LEFT);
-	//	break;
-	//case KEY_RIGHT:
-	//		m_Player->Move(Player::Direction::RIGHT);
-	//	break;
-	//case KEY_UP:
-	//		m_Player->Move(Player::Direction::UP);
-	//	break;
-	//case KEY_DOWN:
-	//		m_Player->Move(Player::Direction::DOWN);
-	//	break;
-	//default:
-	//	break;
-	//}
-	if (key == KEY_LEFT) {
-		m_Player->Move(Player::Direction::LEFT);
-		m_BackGround->MoveView(1);
-		for (auto it : m_listZone)
-		{
-			it->MoveView(1);
+	if (bIsPressed) {
+		if (key == KEY_LEFT) {
+			m_Player->Move(Player::Direction::LEFT);
+			m_BackGround->MoveView(1);
+			for (auto it : m_listZone)
+			{
+				it->MoveView(1);
+			}
 		}
-	}
-	if (key == KEY_RIGHT) {
-		m_Player->Move(Player::Direction::RIGHT);
-		m_BackGround->MoveView(-1);
-		for (auto it : m_listZone)
-		{
-			it->MoveView(-1);
+		if (key == KEY_RIGHT) {
+			m_Player->Move(Player::Direction::RIGHT);
+			m_BackGround->MoveView(-1);
+			for (auto it : m_listZone)
+			{
+				it->MoveView(-1);
+			}
 		}
+		if (key == KEY_UP)
+			m_Player->Move(Player::Direction::UP);
+		if (key == KEY_DOWN)
+			m_Player->Move(Player::Direction::DOWN);
 	}
-	if (key == KEY_UP)
-		m_Player->Move(Player::Direction::UP);
-	if (key == KEY_DOWN)
-		m_Player->Move(Player::Direction::DOWN);
-
 	if (!bIsPressed)
 	{
 		std::cout << "Stop";

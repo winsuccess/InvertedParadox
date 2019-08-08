@@ -10,12 +10,14 @@ public:
 	Character(std::shared_ptr<Models>& model, std::shared_ptr<Shaders>& shader, std::shared_ptr<Texture>& texture);
 	~Character();
 
-	void Update(GLfloat deltatime);
+	bool	IsAlive();
+	void	Update(GLfloat deltatime) override;
 
 private:
 
 	int m_HP;
 	int m_MP;
 	int m_level;
+	bool	m_isAlive;
 
 };
