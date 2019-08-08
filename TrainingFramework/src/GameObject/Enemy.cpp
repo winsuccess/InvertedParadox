@@ -1,5 +1,4 @@
 #include "Enemy.h"
-#include "GameManager/ResourceManagers.h"
 
 Enemy::Enemy(std::shared_ptr<Models>& model, std::shared_ptr<Shaders>& shader, std::shared_ptr<Texture>& texture)
 	:Sprite2D(model, shader, texture)
@@ -34,6 +33,8 @@ void Enemy::Update(GLfloat deltatime)
 {
 	if (!m_isAlive)
 		return;
+	if (m_HP <= 0)
+		m_isAlive = false;
 
 }
 

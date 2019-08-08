@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "GameStates/GameStateMachine.h"
 #include "GameStates/GameStatebase.h"
+#include "GameManager/SoundManager.h"
 extern GLint screenWidth;
 extern GLint screenHeight;
 

@@ -179,8 +179,12 @@
     <ClInclude Include="src\GameObject\Character.h">
       <Filter>TrainingFramework\src\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="InvertedParadox.rc" />
   </ItemGroup>
 </Project>

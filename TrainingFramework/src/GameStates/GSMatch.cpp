@@ -117,6 +117,7 @@ void GSMatch::Init()
 #pragma region  Init Other
 	ms = MatchState::STATE_PLAYERTURN;
 	playerChoice = 1;
+	turnTransitionSec = 30;
 #pragma endregion
 
 }
@@ -161,7 +162,7 @@ void GSMatch::HandleKeyEvents(int key, bool bIsPressed)
 			else
 				playerChoice--;
 		}
-		else if (key == KEY_ENTER && bIsPressed)
+		else if (key == KEY_SPACEBAR && bIsPressed)
 			ms = GSMatch::STATE_PLAYERATTACK;
 		break;
 	case GSMatch::STATE_PLAYERATTACK:
@@ -183,6 +184,9 @@ void GSMatch::HandleTouchEvents(int x, int y, bool bIsPressed)
 void GSMatch::Update(float deltaTime)
 {
 	m_BackGround->Update(deltaTime);
+	m_Monster->Update(deltaTime);
+	if(!m_Monster->IsAlive())
+		GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Play);
 
 	m_ChoiceHandle->Set2DPosition(m_ChoiceHandle->Get2DPosition().x, m_listChoiceButton.at(playerChoice-1)->Get2DPosition().y);
 
@@ -194,29 +198,37 @@ void GSMatch::Update(float deltaTime)
 		if (playerChoice == 1) {
 			m_Monster->SetHp(-10);
 			std::stringstream stream;
-			stream << std::fixed << std::setprecision(0) << 10;
+			stream << std::fixed << std::setprecision(0) << -10;
 			std::string score = stream.str();
 			m_DamageToMonster->setText(score);
 		}
 		if (playerChoice == 2) {
 			m_Monster->SetHp(-20);
 			std::stringstream stream;
-			stream << std::fixed << std::setprecision(0) << 20;
+			stream << std::fixed << std::setprecision(0) << -20;
 			std::string score = stream.str();
 			m_DamageToMonster->setText(score);
 		}
 		if (playerChoice == 3) {
 			m_Monster->SetHp(-30);
 			std::stringstream stream;
-			stream << std::fixed << std::setprecision(0) << 30;
+			stream << std::fixed << std::setprecision(0) << -30;
 			std::string score = stream.str();
 			m_DamageToMonster->setText(score);
 		}
-		ms = STATE_ENEMYTURN;
+
+			ms = STATE_ENEMYTURN;
+
 		break;
 	case GSMatch::STATE_ENEMYTURN:
+		turnTransitionSec -= deltaTime;
+		if (turnTransitionSec == 0) {
+			turnTransitionSec = 30;
+			ms = STATE_ENEMYATTACK;
+		}
 		break;
 	case GSMatch::STATE_ENEMYATTACK:
+		ms = STATE_PLAYERTURN;
 		break;
 	default:
 		break;
@@ -241,7 +253,7 @@ void GSMatch::Draw()
 	//UI
 	m_PlayerStats->Draw();
 	m_MonsterHealth->Draw();
-	//if (ms == MatchState::STATE_PLAYERATTACK)
+	if (ms==GSMatch::STATE_ENEMYTURN)
 		m_DamageToMonster->Draw();
 
 	//Draw Player Choice Panel

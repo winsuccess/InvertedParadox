@@ -1,4 +1,5 @@
 #include "GSMenu.h"
+#include "SoundManager.h"
 
 GSMenu::GSMenu()
 {
@@ -33,22 +34,8 @@ void GSMenu::Init()
 		});
 	m_listButton.push_back(button);
 
-	////exit button
-	//texture = ResourceManagers::GetInstance()->GetTexture("button_quit");
-	//button = std::make_shared<GameButton>(model, shader, texture);
-	//button->Set2DPosition(screenwidth / 2, 300);
-	//button->SetSize(200, 50);
-	//button->SetOnClick([]() {
-	//	exit(0);
-	//	});
-	//m_listButton.push_back(button);
-
-
-	//text game title
-	//shader = ResourceManagers::GetInstance()->GetShader("TextShader");
-	//std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("arialbd");
-	//m_Text_gameName = std::make_shared< Text>(shader, font, "SAMPLE NAME", TEXT_COLOR::GREEN, 1.0);
-	//m_Text_gameName->Set2DPosition(Vector2(screenwidth / 2 - 80, 120));
+	//Background music
+	SoundManager::GetInstance()->PlaySound("bgmusic");
 }
 
 void GSMenu::Exit()
@@ -74,7 +61,7 @@ void GSMenu::HandleEvents()
 
 void GSMenu::HandleKeyEvents(int key, bool bIsPressed)
 {
-	if(key==KEY_ENTER && bIsPressed)
+	if(key== KEY_SPACEBAR && bIsPressed)
 		GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Play);
 }
 

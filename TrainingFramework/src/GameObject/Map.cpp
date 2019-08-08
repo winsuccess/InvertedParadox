@@ -1,5 +1,4 @@
 #include "Map.h"
-#include "GameManager/ResourceManagers.h"
 
 Map::Map(std::shared_ptr<Models>& model, std::shared_ptr<Shaders>& shader, std::shared_ptr<Texture>& texture)
 	:Sprite2D(model, shader, texture)

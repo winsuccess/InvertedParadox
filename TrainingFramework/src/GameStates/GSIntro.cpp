@@ -1,5 +1,5 @@
 #include "GSIntro.h"
-
+#include "SoundManager.h"
 
 extern int screenWidth; //need get on Graphic engine
 extern int screenHeight; //need get on Graphic engine
@@ -30,6 +30,11 @@ void GSIntro::Init()
 	m_logo = std::make_shared<Sprite2D>(model, shader, texture);
 	m_logo->Set2DPosition(screenwidth/2, screenheight/3);
 	m_logo->SetSize(140.0f, 200/1.5f);
+
+	//intro sound
+	SoundManager::GetInstance()->AddSound("introsound");
+	SoundManager::GetInstance()->PlaySound("introsound");
+	SoundManager::GetInstance()->AddSound("bgmusic");
 }
 
 void GSIntro::Exit()
@@ -67,7 +72,7 @@ void GSIntro::HandleTouchEvents(int x, int y, bool bIsPressed)
 void GSIntro::Update(float deltaTime)
 {
 	m_time += deltaTime;
-	if (m_time > 2.5)
+	if (m_time > 3)
 	{
 		GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Menu);
 		m_time = 0;

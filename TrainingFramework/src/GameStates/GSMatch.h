@@ -31,6 +31,7 @@ private:
 		STATE_ENEMYATTACK,
 	};
 
+	int turnTransitionSec;
 	MatchState ms;
 	int playerChoice;
 	std::shared_ptr<Sprite2D> m_BackGround;
