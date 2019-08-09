@@ -10,6 +10,7 @@ public:
 
 	void SetHp(int x);
 	int GetHp();
+	int GetDamage();
 	bool	IsAlive();
 	void	Update(GLfloat deltatime) override;
 

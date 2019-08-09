@@ -17,6 +17,16 @@ bool Character::IsAlive() {
 	return m_isAlive;
 }
 
+void Character::SetHp(int x)
+{
+	m_HP += x;
+}
+
+int Character::GetHp()
+{
+	return m_HP;
+}
+
 void Character::Update(GLfloat deltatime) {
 	
 }

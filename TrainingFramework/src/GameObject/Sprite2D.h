@@ -26,7 +26,7 @@ public:
 
 	const Vector2& Get2DPosition();
 
-	void		SetSize(GLint width, GLint height);
+	void		SetSize(GLfloat width, GLfloat height);
 	void		SetSize(Vector2 size);
 
 	const Vector2& GetSize();

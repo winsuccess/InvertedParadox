@@ -31,9 +31,17 @@ private:
 		STATE_ENEMYATTACK,
 	};
 
-	int turnTransitionSec;
+	int cooldownTimer;
+	bool actionOnce;
 	MatchState ms;
 	int playerChoice;
+	int r;
+	int rd;
+	bool attackG;
+	bool attackD;
+	bool attackA;
+
+
 	std::shared_ptr<Sprite2D> m_BackGround;
 
 	std::shared_ptr<Character> m_Gumball;
@@ -45,8 +53,15 @@ private:
 	std::shared_ptr<Sprite2D> m_PlayerStats;
 	std::shared_ptr<Sprite2D> m_ChoicePanel;
 	std::shared_ptr<Sprite2D> m_ChoiceHandle;
+	std::shared_ptr<Sprite2D> m_TurnHandle;
 	std::vector<std::shared_ptr<GameButton>>	m_listChoiceButton;
 
+	std::shared_ptr<Text> m_GumballHealth;
+	std::shared_ptr<Text> m_DarwinHealth;
+	std::shared_ptr<Text> m_AnaisHealth;
+	std::shared_ptr<Text> m_DamageToGumball;
+	std::shared_ptr<Text> m_DamageToDarwin;
+	std::shared_ptr<Text> m_DamageToAnais;
 	std::shared_ptr<Text> m_MonsterHealth;
 	std::shared_ptr<Text> m_DamageToMonster;
 

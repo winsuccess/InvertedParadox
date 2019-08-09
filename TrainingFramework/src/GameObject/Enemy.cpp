@@ -4,7 +4,7 @@ Enemy::Enemy(std::shared_ptr<Models>& model, std::shared_ptr<Shaders>& shader, s
 	:Sprite2D(model, shader, texture)
 {
 	damage = 50;
-	m_HP = 100;
+	m_HP = 175;
 	m_MP = 100;
 	m_isAlive = true;
 }
@@ -16,6 +16,11 @@ Enemy::~Enemy()
 void Enemy::SetHp(int x)
 {
 	m_HP += x;
+}
+
+int Enemy::GetDamage()
+{
+	return damage;
 }
 
 int Enemy::GetHp()

@@ -4,7 +4,9 @@
 D:\Gameloft Documents\InvertedParadox\TrainingFramework\src\Helper\ThreadPool.h(37,13): warning C4477:  'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::thread::id'
 D:\Gameloft Documents\InvertedParadox\soloud\Include\soloud.h(37,1): warning C4005:  'WIN32_LEAN_AND_MEAN': macro redefinition
 D:\Gameloft Documents\InvertedParadox\Include\AMD\EGL\eglplatform.h(67): message :  see previous definition of 'WIN32_LEAN_AND_MEAN'
-D:\Gameloft Documents\InvertedParadox\TrainingFramework\src\GameStates\GSMatch.cpp(224,33): warning C4244:  '-=': conversion from 'float' to 'int', possible loss of data
+D:\Gameloft Documents\InvertedParadox\TrainingFramework\src\GameStates\GSMatch.cpp(55,43): warning C4305:  'argument': truncation from 'double' to 'GLfloat'
+D:\Gameloft Documents\InvertedParadox\TrainingFramework\src\GameStates\GSMatch.cpp(251,29): warning C4244:  '-=': conversion from 'float' to 'int', possible loss of data
+D:\Gameloft Documents\InvertedParadox\TrainingFramework\src\GameStates\GSMatch.cpp(318,29): warning C4244:  '-=': conversion from 'float' to 'int', possible loss of data
 D:\Visual Studio\VC\Tools\MSVC\14.21.27702\include\memory(1527,71): warning C4244:  'argument': conversion from '_Ty' to 'float', possible loss of data
 D:\Visual Studio\VC\Tools\MSVC\14.21.27702\include\memory(1527,71): warning C4244:         with
 D:\Visual Studio\VC\Tools\MSVC\14.21.27702\include\memory(1527,71): warning C4244:         [
@@ -20,7 +22,5 @@ D:\Visual Studio\VC\Tools\MSVC\14.21.27702\include\memory(1582): message :      
 D:\Visual Studio\VC\Tools\MSVC\14.21.27702\include\memory(1582): message :         [
 D:\Visual Studio\VC\Tools\MSVC\14.21.27702\include\memory(1582): message :             _Ty=Text
 D:\Visual Studio\VC\Tools\MSVC\14.21.27702\include\memory(1582): message :         ]
-  Enemy.cpp
-  Generating Code...
-D:\Gameloft Documents\InvertedParadox\TrainingFramework\src\GameStates\GSMatch.cpp(107): message :  see reference to function template instantiation 'std::shared_ptr<Text> std::make_shared<Text,std::shared_ptr<Shaders>&,std::shared_ptr<Font>&,const char(&)[1],TEXT_COLOR,double>(std::shared_ptr<Shaders> &,std::shared_ptr<Font> &,const char (&)[1],TEXT_COLOR &&,double &&)' being compiled
+D:\Gameloft Documents\InvertedParadox\TrainingFramework\src\GameStates\GSMatch.cpp(113): message :  see reference to function template instantiation 'std::shared_ptr<Text> std::make_shared<Text,std::shared_ptr<Shaders>&,std::shared_ptr<Font>&,const char(&)[1],TEXT_COLOR,double>(std::shared_ptr<Shaders> &,std::shared_ptr<Font> &,const char (&)[1],TEXT_COLOR &&,double &&)' being compiled
   TrainingFramework.vcxproj -> D:\Gameloft Documents\InvertedParadox\\BIN-Nvidia\InvertedParadox.exe

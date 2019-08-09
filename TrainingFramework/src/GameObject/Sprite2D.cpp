@@ -168,7 +168,7 @@ const Vector2& Sprite2D::Get2DPosition()
 }
 
 
-void Sprite2D::SetSize(GLint width, GLint height)
+void Sprite2D::SetSize(GLfloat width, GLfloat height)
 {
 	m_Size2D.x = width;
 	m_Size2D.y = height;

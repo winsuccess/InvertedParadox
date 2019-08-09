@@ -31,35 +31,41 @@ void GSMatch::Init()
 #pragma region Characters
 
 	//Characters
-	////Gumball
-	//texture = ResourceManagers::GetInstance()->GetTexture("");
-	//m_Gumball = std::make_shared<Sprite2D>(model, shader, texture);
-	//m_Gumball->Set2DPosition(screenwidth / 2, screenheight / 2);
-	//m_Gumball->SetSize(screenwidth, screenheight);
-	////Darwin
-	//texture = ResourceManagers::GetInstance()->GetTexture("");
-	//m_Darwin = std::make_shared<Sprite2D>(model, shader, texture);
-	//m_Darwin->Set2DPosition(screenwidth / 2, screenheight / 2);
-	//m_Darwin->SetSize(screenwidth, screenheight);
-	////Anais
-	//texture = ResourceManagers::GetInstance()->GetTexture("");
-	//m_Anais = std::make_shared<Sprite2D>(model, shader, texture);
-	//m_Anais->Set2DPosition(screenwidth / 2, screenheight / 2);
-	//m_Anais->SetSize(screenwidth, screenheight);
+	//Gumball
+	texture = ResourceManagers::GetInstance()->GetTexture("match_gumball");
+	m_Gumball = std::make_shared<Character>(model, shader, texture);
+	m_Gumball->Set2DPosition(270, 318);
+	m_Gumball->SetSize(181 / 2, 260 / 2);
+	//Darwin
+	texture = ResourceManagers::GetInstance()->GetTexture("match_darwin");
+	m_Darwin = std::make_shared<Character>(model, shader, texture);
+	m_Darwin->Set2DPosition(129, 340);
+	m_Darwin->SetSize(248 / 2, 239 / 2);
+	//Anais
+	texture = ResourceManagers::GetInstance()->GetTexture("match_anais");
+	m_Anais = std::make_shared<Character>(model, shader, texture);
+	m_Anais->Set2DPosition(200, 338);
+	m_Anais->SetSize(185 / 2, 202 / 2);
 #pragma endregion
 
 	//Enemys
-
-	texture = ResourceManagers::GetInstance()->GetTexture("");
+	texture = ResourceManagers::GetInstance()->GetTexture("match_monster1");
 	m_Monster = std::make_shared<Enemy>(model, shader, texture);
-	m_Monster->Set2DPosition(screenwidth / 2, screenheight / 2);
-	m_Monster->SetSize(screenwidth, screenheight);
+	m_Monster->Set2DPosition(630, 260);
+	m_Monster->SetSize(508 / 1.25, 315 / 1.25);
 
-	//Player Stats
+
+	//Player Stats Panel
 	texture = ResourceManagers::GetInstance()->GetTexture("match_demo_stats");
 	m_PlayerStats = std::make_shared<Sprite2D>(model, shader, texture);
 	m_PlayerStats->Set2DPosition(screenwidth / 2, 450);
 	m_PlayerStats->SetSize(600, 112);
+
+	//Turn Handle
+	texture = ResourceManagers::GetInstance()->GetTexture("match_turn_handle");
+	m_TurnHandle = std::make_shared<Sprite2D>(model, shader, texture);
+	m_TurnHandle->Set2DPosition(-100, -100);
+	m_TurnHandle->SetSize(74 / 2, 20);
 
 #pragma region ChoiceUI
 	//Choice UI
@@ -103,11 +109,28 @@ void GSMatch::Init()
 #pragma region Texts
 	//Enemy Health
 	shader = ResourceManagers::GetInstance()->GetShader("TextShader");
-	std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("arialbd");
-	m_MonsterHealth = std::make_shared< Text>(shader, font,"", TEXT_COLOR::RED, 1.0);
-	m_MonsterHealth->Set2DPosition(550,125);
+	std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("ttpixel");
+	m_MonsterHealth = std::make_shared< Text>(shader, font, "", TEXT_COLOR::RED, 1.0);
+	m_MonsterHealth->Set2DPosition(550, 125);
 	m_DamageToMonster = std::make_shared< Text>(shader, font, "", TEXT_COLOR::RED, 1.0);
 	m_DamageToMonster->Set2DPosition(475, 175);
+
+	//Characters Health
+
+	m_GumballHealth = std::make_shared< Text>(shader, font, "", TEXT_COLOR::RED, 1.0);
+	m_GumballHealth->Set2DPosition(270, 218);
+	m_DamageToGumball = std::make_shared< Text>(shader, font, "", TEXT_COLOR::RED, 1.0);
+	m_DamageToGumball->Set2DPosition(290, 218);
+
+	m_AnaisHealth = std::make_shared< Text>(shader, font, "", TEXT_COLOR::RED, 1.0);
+	m_AnaisHealth->Set2DPosition(200, 238);
+	m_DamageToAnais = std::make_shared< Text>(shader, font, "", TEXT_COLOR::RED, 1.0);
+	m_DamageToAnais->Set2DPosition(220, 238);
+
+	m_DarwinHealth = std::make_shared< Text>(shader, font, "", TEXT_COLOR::RED, 1.0);
+	m_DarwinHealth->Set2DPosition(129, 240);
+	m_DamageToDarwin = std::make_shared< Text>(shader, font, "", TEXT_COLOR::RED, 1.0);
+	m_DamageToDarwin->Set2DPosition(150, 240);
 
 #pragma endregion
 
@@ -117,7 +140,11 @@ void GSMatch::Init()
 #pragma region  Init Other
 	ms = MatchState::STATE_PLAYERTURN;
 	playerChoice = 1;
-	turnTransitionSec = 30;
+	cooldownTimer = 60;
+	actionOnce = false;
+	attackG = false;
+	attackD = false;
+	attackA = false;
 #pragma endregion
 
 }
@@ -178,86 +205,194 @@ void GSMatch::HandleKeyEvents(int key, bool bIsPressed)
 
 void GSMatch::HandleTouchEvents(int x, int y, bool bIsPressed)
 {
-	
+
 }
 
 void GSMatch::Update(float deltaTime)
 {
 	m_BackGround->Update(deltaTime);
 	m_Monster->Update(deltaTime);
-	if(!m_Monster->IsAlive())
-		GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Play);
 
-	m_ChoiceHandle->Set2DPosition(m_ChoiceHandle->Get2DPosition().x, m_listChoiceButton.at(playerChoice-1)->Get2DPosition().y);
+	m_ChoiceHandle->Set2DPosition(m_ChoiceHandle->Get2DPosition().x, m_listChoiceButton.at(playerChoice - 1)->Get2DPosition().y);
 
+	//Update Match State
 	switch (ms)
 	{
+
 	case GSMatch::STATE_PLAYERTURN:
+		actionOnce = true;
+		m_TurnHandle->Set2DPosition(m_Gumball->Get2DPosition().x, m_Gumball->Get2DPosition().y - 100);
 		break;
 	case GSMatch::STATE_PLAYERATTACK:
-		if (playerChoice == 1) {
-			m_Monster->SetHp(-10);
-			std::stringstream stream;
-			stream << std::fixed << std::setprecision(0) << -10;
-			std::string score = stream.str();
-			m_DamageToMonster->setText(score);
+		if (actionOnce) {
+			if (playerChoice == 1) {
+				m_Monster->SetHp(-10);
+				std::stringstream stream;
+				stream << std::fixed << std::setprecision(0) << -10;
+				std::string score = stream.str();
+				m_DamageToMonster->setText(score);
+			}
+			if (playerChoice == 2) {
+				m_Monster->SetHp(-20);
+				std::stringstream stream;
+				stream << std::fixed << std::setprecision(0) << -20;
+				std::string score = stream.str();
+				m_DamageToMonster->setText(score);
+			}
+			if (playerChoice == 3) {
+				m_Monster->SetHp(-30);
+				std::stringstream stream;
+				stream << std::fixed << std::setprecision(0) << -30;
+				std::string score = stream.str();
+				m_DamageToMonster->setText(score);
+			}
+			actionOnce = false;
 		}
-		if (playerChoice == 2) {
-			m_Monster->SetHp(-20);
-			std::stringstream stream;
-			stream << std::fixed << std::setprecision(0) << -20;
-			std::string score = stream.str();
-			m_DamageToMonster->setText(score);
-		}
-		if (playerChoice == 3) {
-			m_Monster->SetHp(-30);
-			std::stringstream stream;
-			stream << std::fixed << std::setprecision(0) << -30;
-			std::string score = stream.str();
-			m_DamageToMonster->setText(score);
-		}
-
+		cooldownTimer -= deltaTime;
+		if (cooldownTimer <= 0) {
+			cooldownTimer = 60;
 			ms = STATE_ENEMYTURN;
-
+		}
 		break;
 	case GSMatch::STATE_ENEMYTURN:
-		turnTransitionSec -= deltaTime;
-		if (turnTransitionSec == 0) {
-			turnTransitionSec = 30;
-			ms = STATE_ENEMYATTACK;
-		}
+		actionOnce = true;
+		m_TurnHandle->Set2DPosition(m_Monster->Get2DPosition().x, m_Monster->Get2DPosition().y - 180);
+
+		r = rand() % 1;
+		rd = rand() % 10 + (m_Monster->GetDamage() - 5);
+		ms = STATE_ENEMYATTACK;
 		break;
 	case GSMatch::STATE_ENEMYATTACK:
-		ms = STATE_PLAYERTURN;
+		if (actionOnce) {
+			if (r == 0) {
+				r = rand() % 3;
+				if (r == 0)
+				{
+					m_Gumball->SetHp(-2 * rd);
+					std::stringstream stream;
+					stream << std::fixed << std::setprecision(0) << -2 * rd;
+					std::string score = stream.str();
+					m_DamageToGumball->setText(score);
+					attackG = true;
+				}
+				else if (r == 1) {
+					m_Darwin->SetHp(-2 * rd);
+					std::stringstream stream;
+					stream << std::fixed << std::setprecision(0) << -2 * rd;
+					std::string score = stream.str();
+					m_DamageToDarwin->setText(score);
+					attackA = true;
+				}
+				else {
+					m_Anais->SetHp(-2 * rd);
+					std::stringstream stream;
+					stream << std::fixed << std::setprecision(0) << -2 * rd;
+					std::string score = stream.str();
+					m_DamageToAnais->setText(score);
+					attackD = true;
+				}
+			}
+			else
+			{
+				m_Gumball->SetHp(-rd);
+				m_Darwin->SetHp(-rd);
+				m_Anais->SetHp(-rd);
+				std::stringstream stream;
+				stream << std::fixed << std::setprecision(0) << -rd;
+				std::string score = stream.str();
+				m_DamageToGumball->setText(score);
+				std::stringstream stream2;
+				stream2 << std::fixed << std::setprecision(0) << -rd;
+				score = stream2.str();
+				m_DamageToAnais->setText(score);
+				std::stringstream stream3;
+				stream3 << std::fixed << std::setprecision(0) << -rd;
+				score = stream3.str();
+				m_DamageToDarwin->setText(score);
+				attackG = true;
+				attackA = true;
+				attackD = true;
+			}
+			actionOnce = false;
+		}
+		cooldownTimer -= deltaTime;
+		if (cooldownTimer <= 0) {
+			attackG = false;
+			attackA = false;
+			attackD = false;
+			cooldownTimer = 60;
+			ms = STATE_PLAYERTURN;
+		}
 		break;
 	default:
 		break;
 	}
 
-	//update Stats
+#pragma region Update Stats
+	//Update Stats
 	std::stringstream stream;
+	std::stringstream stream1;
+	std::stringstream stream2;
+	std::stringstream stream3;
+	std::string score;
+
+	//Gumball Stats
+	stream1 << std::fixed << std::setprecision(0) << m_Gumball->GetHp();
+	score = stream1.str();
+	m_GumballHealth->setText(score);
+
+	//Anais Stats
+	stream2 << std::fixed << std::setprecision(0) << m_Anais->GetHp();
+	score = stream2.str();
+	m_AnaisHealth->setText(score);
+
+	//Darwin Stats
+	stream3 << std::fixed << std::setprecision(0) << m_Darwin->GetHp();
+	score = stream3.str();
+	m_DarwinHealth->setText(score);
+
+	//Enemy Stats
 	stream << std::fixed << std::setprecision(0) << m_Monster->GetHp();
-	std::string score = stream.str();
+	score = stream.str();
 	m_MonsterHealth->setText(score);
-	
+#pragma endregion
+
+
+	//When you win
+	if (!m_Monster->IsAlive())
+		GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Play);
+
+	//When you lose
+
 }
 
 void GSMatch::Draw()
 {
 	m_BackGround->Draw();
 
-	//m_Gumball->Draw();
-	//m_Darwin->Draw();
-	//m_Anais->Draw();
+	m_Gumball->Draw();
+	m_Anais->Draw();
+	m_Darwin->Draw();
+	m_Monster->Draw();
 
 	//UI
 	m_PlayerStats->Draw();
+	m_TurnHandle->Draw();
 	m_MonsterHealth->Draw();
-	if (ms==GSMatch::STATE_ENEMYTURN)
+	m_GumballHealth->Draw();
+	m_AnaisHealth->Draw();
+	m_DarwinHealth->Draw();
+	if (ms == GSMatch::STATE_PLAYERATTACK)
 		m_DamageToMonster->Draw();
+	if (attackG)
+		m_DamageToGumball->Draw();
+	if (attackA)
+		m_DamageToAnais->Draw();
+	if (attackD)
+		m_DamageToDarwin->Draw();
 
 	//Draw Player Choice Panel
-	if (ms==MatchState::STATE_PLAYERTURN) {
+	if (ms == MatchState::STATE_PLAYERTURN) {
 		m_ChoicePanel->Draw();
 		for (auto it : m_listChoiceButton)
 			it->Draw();
