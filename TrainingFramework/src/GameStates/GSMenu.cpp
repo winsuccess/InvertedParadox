@@ -3,7 +3,8 @@
 
 GSMenu::GSMenu()
 {
-
+	changetoPlay = false;
+	cooldownTimer = 80;
 }
 
 
@@ -35,7 +36,7 @@ void GSMenu::Init()
 	m_listButton.push_back(button);
 
 	//Background music
-	SoundManager::GetInstance()->PlaySound("bgmusic");
+	SoundManager::GetInstance()->PlaySound("menumusic",true);
 }
 
 void GSMenu::Exit()
@@ -61,8 +62,10 @@ void GSMenu::HandleEvents()
 
 void GSMenu::HandleKeyEvents(int key, bool bIsPressed)
 {
-	if(key== KEY_SPACEBAR && bIsPressed)
-		GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Play);
+	if (key == KEY_SPACEBAR && bIsPressed) {
+		SoundManager::GetInstance()->PlaySound("startgamesound");
+		changetoPlay = true;
+	}
 }
 
 void GSMenu::HandleTouchEvents(int x, int y, bool bIsPressed)
@@ -81,6 +84,12 @@ void GSMenu::Update(float deltaTime)
 	{
 		it->Update(deltaTime);
 	}
+	if (changetoPlay)
+	{
+		cooldownTimer -= deltaTime;
+	}
+	if(cooldownTimer<=0)
+		GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Play);
 }
 
 void GSMenu::Draw()

@@ -31,10 +31,23 @@ void GSIntro::Init()
 	m_logo->Set2DPosition(screenwidth/2, screenheight/3);
 	m_logo->SetSize(140.0f, 200/1.5f);
 
-	//intro sound
+#pragma region  Add Sounds
+
 	SoundManager::GetInstance()->AddSound("introsound");
 	SoundManager::GetInstance()->PlaySound("introsound");
+
+	SoundManager::GetInstance()->AddSound("menumusic");
 	SoundManager::GetInstance()->AddSound("bgmusic");
+	SoundManager::GetInstance()->AddSound("startgamesound");
+	SoundManager::GetInstance()->AddSound("changesound");
+	SoundManager::GetInstance()->AddSound("selectsound");
+	SoundManager::GetInstance()->AddSound("onturnsound");
+	SoundManager::GetInstance()->AddSound("sienceattacksound");
+
+	SoundManager::GetInstance()->AddSound("enemyattacksound");
+	SoundManager::GetInstance()->AddSound("entermatchsound");
+#pragma endregion
+
 }
 
 void GSIntro::Exit()

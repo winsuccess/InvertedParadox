@@ -40,6 +40,9 @@ private:
 	bool attackG;
 	bool attackD;
 	bool attackA;
+	bool updateHealth;
+	int cTurn;
+	bool showDamageRecieved;
 
 
 	std::shared_ptr<Sprite2D> m_BackGround;

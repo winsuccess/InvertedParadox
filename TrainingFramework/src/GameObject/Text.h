@@ -7,6 +7,7 @@ enum class TEXT_COLOR {
 	GREEN,
 	BLUE,
 	YELLOW,
+	DARKYELLOW,
 	PURPLE,
 	CYAN,
 	BLACK

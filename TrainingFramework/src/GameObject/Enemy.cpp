@@ -3,8 +3,8 @@
 Enemy::Enemy(std::shared_ptr<Models>& model, std::shared_ptr<Shaders>& shader, std::shared_ptr<Texture>& texture)
 	:Sprite2D(model, shader, texture)
 {
-	damage = 50;
-	m_HP = 175;
+	damage = 30;
+	m_HP = 375;
 	m_MP = 100;
 	m_isAlive = true;
 }
