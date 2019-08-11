@@ -15,7 +15,7 @@ GSPlay::GSPlay()
 	cooldownTimer = 30;
 	enableMovement = true;
 	actionOnce = true;
-	animOnce = false;
+	animOnce = true;
 }
 
 
@@ -46,7 +46,7 @@ void GSPlay::Init()
 	//Player
 	shader = ResourceManagers::GetInstance()->GetShader("SpriteShader");
 	texture = ResourceManagers::GetInstance()->GetTexture("playeranim");
-	m_Player = std::make_shared<Player>(model, shader, texture, Vector2(640, 60), Vector2(40, 60), 11, 11, 0);
+	m_Player = std::make_shared<Player>(model, shader, texture, Vector2(640, 60), Vector2(40, 60), 0, 0, 1);
 	m_Player->SetActive(false);
 	m_Player->Set2DPosition(screenwidth / 2-60, screenheight / 2-10);
 	m_Player->SetSize(40, 60);
@@ -55,7 +55,7 @@ void GSPlay::Init()
 	texture = ResourceManagers::GetInstance()->GetTexture("play_portal");
 	std::shared_ptr<DualZone> dz1 = std::make_shared<DualZone>(model, shader, texture,Vector2(462,261),Vector2(154,261),0,2,1);
 	dz1->SetActive(true);
-	dz1->Set2DPosition(650, 280);
+	dz1->Set2DPosition(-320, 373);
 	dz1->SetSize(154/3, 261/3);
 	m_listZone.push_back(dz1);
 
@@ -157,10 +157,14 @@ void GSPlay::HandleKeyEvents(int key, bool bIsPressed)
 {
 	if (enableMovement) {
 		if (bIsPressed) {
-			m_Player->SetActive(true);
 			if (key == KEY_LEFT) {
 			//	direction = 1;
-				m_Player->SetAnim(0, 3, 2);
+				if (animOnce)
+				{
+					m_Player->SetAnim(0, 3, 1);
+					m_Player->SetActive(true);
+					animOnce = false;
+				}
 				m_Player->Move(Player::Direction::LEFT);
 				m_BackGround->MoveView(1);
 				for (auto it : m_listZone)
@@ -170,7 +174,12 @@ void GSPlay::HandleKeyEvents(int key, bool bIsPressed)
 			}
 			if (key == KEY_RIGHT) {
 			//	direction = 2;
-				m_Player->SetAnim(4, 7, 2);
+				if (animOnce)
+				{
+					m_Player->SetAnim(4, 7, 1);
+					m_Player->SetActive(true);
+					animOnce = false;
+				}
 				m_Player->Move(Player::Direction::RIGHT);
 				m_BackGround->MoveView(-1);
 				for (auto it : m_listZone)
@@ -180,29 +189,29 @@ void GSPlay::HandleKeyEvents(int key, bool bIsPressed)
 			}
 			if (key == KEY_UP) {
 			//	direction = 3;
-				//m_Player->SetAnim(8, 12, 2);
-				//m_Player->SetActive(true);
+				if (animOnce)
+				{
+					m_Player->SetAnim(8, 12, 1);
+					m_Player->SetActive(true);
+					animOnce = false;
+				}
 				m_Player->Move(Player::Direction::UP);
 			}
 			if (key == KEY_DOWN){
 			//	direction = 4;
-				//m_Player->SetAnim(12, 15, 2);
-				//m_Player->SetActive(true);
+				if (animOnce)
+				{
+					m_Player->SetAnim(12, 15, 1);
+					m_Player->SetActive(true);
+					animOnce = false;
+				}
 				m_Player->Move(Player::Direction::DOWN);
 				}
 		}
 		if (!bIsPressed)
 		{
-			//m_Player->SetActive(false);
-			//if(direction ==1)
-			//	m_Player->SetAnim(0, 0, 1);
-			//else if(direction == 2)
-			//	m_Player->SetAnim(4, 4, 1);
-			//else if (direction == 3)
-			//	m_Player->SetAnim(8, 8, 1);
-			//else if (direction == 4)
-			//	m_Player->SetAnim(12, 12, 1);
-			//direction = 0;
+			animOnce = true;
+			m_Player->SetActive(false);
 			m_Player->Move(Player::Direction::IDLE);
 			m_BackGround->MoveView(0);
 			for (auto it : m_listZone)
@@ -255,7 +264,7 @@ void GSPlay::Update(float deltaTime)
 			}
 			}
 		if (actionOnce && !enableMovement) {
-			SoundManager::GetInstance()->PlaySound("entermatchsound");
+			SoundManager::GetInstance()->PlaySound("entermatchsound",false);
 			actionOnce = false;
 		}
 		if (cooldownTimer <= 0) {

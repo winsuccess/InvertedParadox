@@ -63,7 +63,7 @@ void GSMenu::HandleEvents()
 void GSMenu::HandleKeyEvents(int key, bool bIsPressed)
 {
 	if (key == KEY_SPACEBAR && bIsPressed) {
-		SoundManager::GetInstance()->PlaySound("startgamesound");
+		SoundManager::GetInstance()->PlaySound("startgamesound",false);
 		changetoPlay = true;
 	}
 }

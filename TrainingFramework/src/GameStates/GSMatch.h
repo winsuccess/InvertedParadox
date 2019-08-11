@@ -25,10 +25,12 @@ public:
 
 private:
 	enum MatchState {
+		STATE_STARTBATTLE,
 		STATE_PLAYERTURN,
 		STATE_PLAYERATTACK,
 		STATE_ENEMYTURN,
 		STATE_ENEMYATTACK,
+		STATE_ENDBATTLE,
 	};
 
 	int cooldownTimer;

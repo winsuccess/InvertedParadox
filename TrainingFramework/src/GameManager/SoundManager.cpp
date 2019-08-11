@@ -33,6 +33,9 @@ void SoundManager::AddSound(const std::string& name)
 void SoundManager::PlaySound(const std::string& name, bool loop)
 {
 	std::shared_ptr<SoLoud::Wav>  wave;
+	//if (loop) {
+	//	wave->setLooping(1);
+	//}
 	auto it = m_MapWave.find(name);
 	if (it != m_MapWave.end())
 	{

@@ -34,7 +34,7 @@ void GSIntro::Init()
 #pragma region  Add Sounds
 
 	SoundManager::GetInstance()->AddSound("introsound");
-	SoundManager::GetInstance()->PlaySound("introsound");
+	SoundManager::GetInstance()->PlaySound("introsound", false);
 
 	SoundManager::GetInstance()->AddSound("menumusic");
 	SoundManager::GetInstance()->AddSound("bgmusic");
@@ -46,9 +46,11 @@ void GSIntro::Init()
 	SoundManager::GetInstance()->AddSound("normalattacksound");
 	SoundManager::GetInstance()->AddSound("sienceattacksound");
 	SoundManager::GetInstance()->AddSound("itemattacksound");
+	SoundManager::GetInstance()->AddSound("magicattacksound");
 
 	SoundManager::GetInstance()->AddSound("enemyattacksound");
 	SoundManager::GetInstance()->AddSound("entermatchsound");
+	SoundManager::GetInstance()->AddSound("weditit"); 
 #pragma endregion
 
 }

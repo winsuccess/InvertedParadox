@@ -6,9 +6,9 @@
 GSMatch::GSMatch()
 {
 #pragma region  Init
-	ms = MatchState::STATE_PLAYERTURN;
+	ms = MatchState::STATE_STARTBATTLE;
 	playerChoice = 1;
-	cooldownTimer = 220;
+	cooldownTimer = 60;
 	actionOnce = false;
 	attackG = false;
 	attackD = false;
@@ -72,17 +72,17 @@ void GSMatch::Init()
 	//Gumball Stats
 	texture = ResourceManagers::GetInstance()->GetTexture("match_healthbar");
 	m_GumballHealthBar = std::make_shared<Sprite2D>(model, shader, texture);
-	m_GumballHealthBar->Set2DPosition(412, 422);
+	m_GumballHealthBar->Set2DPosition(413, 422);
 	m_GumballHealthBar->SetSize(220, 7);
 	//Anais Stats
 	texture = ResourceManagers::GetInstance()->GetTexture("match_healthbar");
 	m_AnaisHealthBar = std::make_shared<Sprite2D>(model, shader, texture);
-	m_AnaisHealthBar->Set2DPosition(412, 455);
+	m_AnaisHealthBar->Set2DPosition(413, 455);
 	m_AnaisHealthBar->SetSize(220, 7);
 	//Darwin Stats
 	texture = ResourceManagers::GetInstance()->GetTexture("match_healthbar");
 	m_DarwinHealthBar = std::make_shared<Sprite2D>(model, shader, texture);
-	m_DarwinHealthBar->Set2DPosition(412, 489);
+	m_DarwinHealthBar->Set2DPosition(413, 489);
 	m_DarwinHealthBar->SetSize(220, 7);
 #pragma endregion
 
@@ -208,7 +208,7 @@ void GSMatch::HandleKeyEvents(int key, bool bIsPressed)
 				playerChoice = 1;
 			else
 				playerChoice++;
-			SoundManager::GetInstance()->PlaySound("changesound");
+			SoundManager::GetInstance()->PlaySound("changesound", false);
 		}
 		else if (key == KEY_UP && bIsPressed)
 		{
@@ -216,12 +216,12 @@ void GSMatch::HandleKeyEvents(int key, bool bIsPressed)
 				playerChoice = 3;
 			else
 				playerChoice--;
-			SoundManager::GetInstance()->PlaySound("changesound");
+			SoundManager::GetInstance()->PlaySound("changesound", false);
 		}
 		else if (key == KEY_SPACEBAR && bIsPressed)
 		{
 			ms = GSMatch::STATE_PLAYERATTACK;
-			SoundManager::GetInstance()->PlaySound("selectsound");
+			SoundManager::GetInstance()->PlaySound("selectsound", false);
 		}
 		break;
 	case GSMatch::STATE_PLAYERATTACK:
@@ -250,7 +250,13 @@ void GSMatch::Update(float deltaTime)
 	//Update Match State
 	switch (ms)
 	{
-
+	case GSMatch::STATE_STARTBATTLE:
+		cooldownTimer -= deltaTime;
+		if (cooldownTimer <= 0) {
+			cooldownTimer = 150;
+				ms = STATE_PLAYERTURN;
+			}
+		break;
 	case GSMatch::STATE_PLAYERTURN:
 		//if(!actionOnce)
 		//	SoundManager::GetInstance()->PlaySound("onturnsound");
@@ -270,6 +276,7 @@ void GSMatch::Update(float deltaTime)
 		if (actionOnce) {
 			updateHealth = false;
 			if (playerChoice == 1) {
+				SoundManager::GetInstance()->PlaySound("magicattacksound", false);
 				std::stringstream stream;
 				m_Monster->SetHp(-10);
 				stream << std::fixed << std::setprecision(0) << -10;
@@ -277,6 +284,7 @@ void GSMatch::Update(float deltaTime)
 				m_DamageToMonster->setText(score);
 			}
 			if (playerChoice == 2) {
+				SoundManager::GetInstance()->PlaySound("normalattacksound", false);
 				m_Monster->SetHp(-20);
 				std::stringstream stream;
 				stream << std::fixed << std::setprecision(0) << -20;
@@ -284,7 +292,7 @@ void GSMatch::Update(float deltaTime)
 				m_DamageToMonster->setText(score);
 			}
 			if (playerChoice == 3) {
-				SoundManager::GetInstance()->PlaySound("sienceattacksound");
+				SoundManager::GetInstance()->PlaySound("sienceattacksound", false);
 				m_Monster->SetHp(-30);
 				std::stringstream stream;
 				stream << std::fixed << std::setprecision(0) << -30;
@@ -301,8 +309,13 @@ void GSMatch::Update(float deltaTime)
 		if (cooldownTimer <= 0) {
 			showDamageRecieved = false;
 			updateHealth = false;
-			cooldownTimer = 250;
-			if (cTurn == 1 || cTurn == 2) {
+			cooldownTimer = 150;
+			if (m_Monster->GetHp() <= 0) {
+				actionOnce = true;
+				cooldownTimer = 300;
+				ms = STATE_ENDBATTLE;
+			}
+			else if (cTurn == 1 || cTurn == 2) {
 				cTurn++;
 				ms = STATE_PLAYERTURN;
 			}
@@ -316,7 +329,7 @@ void GSMatch::Update(float deltaTime)
 		//if (!actionOnce)
 		//	SoundManager::GetInstance()->PlaySound("onturnsound");
 		actionOnce = true;
-		m_TurnHandle->Set2DPosition(m_Monster->Get2DPosition().x+30, m_Monster->Get2DPosition().y - 180);
+		m_TurnHandle->Set2DPosition(m_Monster->Get2DPosition().x+10, m_Monster->Get2DPosition().y - 180);
 
 		r = rand() % 2;
 		rd = rand() % 10 + (m_Monster->GetDamage() - 5);
@@ -324,7 +337,7 @@ void GSMatch::Update(float deltaTime)
 		break;
 	case GSMatch::STATE_ENEMYATTACK:
 		if (actionOnce) {
-			SoundManager::GetInstance()->PlaySound("enemyattacksound");
+			SoundManager::GetInstance()->PlaySound("enemyattacksound", false);
 			if (r == 0) {
 				r = rand() % 3;
 				if (r == 0)
@@ -336,7 +349,7 @@ void GSMatch::Update(float deltaTime)
 					m_DamageToGumball->setText(score);
 					attackG = true;
 					m_GumballHealthBar->SetSize(m_GumballHealthBar->GetSize().x - m_GumballHealthBar->GetSize().x / 250 * rd, m_GumballHealthBar->GetSize().y);
-					m_GumballHealthBar->Set2DPosition(m_GumballHealthBar->Get2DPosition().x - 220 / 250 * rd, m_GumballHealthBar->Get2DPosition().y);
+					m_GumballHealthBar->Set2DPosition(m_GumballHealthBar->Get2DPosition().x - m_GumballHealthBar->GetSize().x / 500 * rd, m_GumballHealthBar->Get2DPosition().y);
 				}
 				else if (r == 1) {
 					m_Anais->SetHp(-2 * rd);
@@ -346,7 +359,7 @@ void GSMatch::Update(float deltaTime)
 					m_DamageToAnais->setText(score);
 					attackA = true;
 					m_AnaisHealthBar->SetSize(m_AnaisHealthBar->GetSize().x - m_AnaisHealthBar->GetSize().x / 250 * rd, m_AnaisHealthBar->GetSize().y);
-					m_AnaisHealthBar->Set2DPosition(m_AnaisHealthBar->Get2DPosition().x - 220 /250 * rd, m_AnaisHealthBar->Get2DPosition().y);
+					m_AnaisHealthBar->Set2DPosition(m_AnaisHealthBar->Get2DPosition().x - m_AnaisHealthBar->GetSize().x /500 * rd, m_AnaisHealthBar->Get2DPosition().y);
 				}
 				else {
 					m_Darwin->SetHp(-2 * rd);
@@ -356,7 +369,7 @@ void GSMatch::Update(float deltaTime)
 					m_DamageToDarwin->setText(score);
 					attackD = true;
 					m_DarwinHealthBar->SetSize(m_DarwinHealthBar->GetSize().x - m_DarwinHealthBar->GetSize().x / 250 * rd, m_DarwinHealthBar->GetSize().y);
-					m_DarwinHealthBar->Set2DPosition(m_DarwinHealthBar->Get2DPosition().x - 220 /250 * rd, m_DarwinHealthBar->Get2DPosition().y);
+					m_DarwinHealthBar->Set2DPosition(m_DarwinHealthBar->Get2DPosition().x - m_DarwinHealthBar->GetSize().x /500 * rd, m_DarwinHealthBar->Get2DPosition().y);
 
 				}
 			}
@@ -383,9 +396,9 @@ void GSMatch::Update(float deltaTime)
 				m_GumballHealthBar->SetSize(m_GumballHealthBar->GetSize().x - m_GumballHealthBar->GetSize().x / 500 * rd, m_GumballHealthBar->GetSize().y);
 				m_AnaisHealthBar->SetSize(m_AnaisHealthBar->GetSize().x - m_AnaisHealthBar->GetSize().x / 500 * rd, m_AnaisHealthBar->GetSize().y);
 				m_DarwinHealthBar->SetSize(m_DarwinHealthBar->GetSize().x - m_DarwinHealthBar->GetSize().x / 500 * rd, m_DarwinHealthBar->GetSize().y);
-				m_GumballHealthBar->Set2DPosition(m_GumballHealthBar->Get2DPosition().x -  220 / 500 * rd, m_GumballHealthBar->Get2DPosition().y);
-				m_AnaisHealthBar->Set2DPosition(m_AnaisHealthBar->Get2DPosition().x - 220 / 500 * rd, m_AnaisHealthBar->Get2DPosition().y);
-				m_DarwinHealthBar->Set2DPosition(m_DarwinHealthBar->Get2DPosition().x - 220 / 500 * rd, m_DarwinHealthBar->Get2DPosition().y);
+				m_GumballHealthBar->Set2DPosition(m_GumballHealthBar->Get2DPosition().x - m_GumballHealthBar->GetSize().x / 500 * rd, m_GumballHealthBar->Get2DPosition().y);
+				m_AnaisHealthBar->Set2DPosition(m_AnaisHealthBar->Get2DPosition().x - m_AnaisHealthBar->GetSize().x / 500 * rd, m_AnaisHealthBar->Get2DPosition().y);
+				m_DarwinHealthBar->Set2DPosition(m_DarwinHealthBar->Get2DPosition().x - m_DarwinHealthBar->GetSize().x / 500 * rd, m_DarwinHealthBar->Get2DPosition().y);
 			}
 			actionOnce = false;
 		}
@@ -402,6 +415,14 @@ void GSMatch::Update(float deltaTime)
 			showDamageRecieved = false;
 			updateHealth = false;
 			ms = STATE_PLAYERTURN;
+		}
+		break;
+	case GSMatch::STATE_ENDBATTLE:
+		if(actionOnce)
+			SoundManager::GetInstance()->PlaySound("weditit", false);
+		cooldownTimer -= deltaTime;
+		if (cooldownTimer <= 0) {
+			GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Play);
 		}
 		break;
 	default:
@@ -442,7 +463,6 @@ void GSMatch::Update(float deltaTime)
 	//When you win
 	if (!m_Monster->IsAlive()) {
 		std::cout << "YOU WIN THE MATCH!";
-		GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Play);
 	}
 
 	//When you lose
