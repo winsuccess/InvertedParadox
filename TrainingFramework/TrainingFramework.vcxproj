@@ -279,6 +279,7 @@
     <ClCompile Include="src\GameObject\Sprite3D.cpp" />
     <ClCompile Include="src\GameObject\Models.cpp" />
     <ClCompile Include="src\GameObject\Shaders.cpp" />
+    <ClCompile Include="src\GameObject\SpriteSheet.cpp" />
     <ClCompile Include="src\GameObject\Text.cpp" />
     <ClCompile Include="src\GameObject\Texture.cpp" />
     <ClCompile Include="src\GameStates\GameStatebase.cpp" />
@@ -308,6 +309,7 @@
     <ClInclude Include="src\GameObject\Sprite3D.h" />
     <ClInclude Include="src\GameObject\Models.h" />
     <ClInclude Include="src\GameObject\Shaders.h" />
+    <ClInclude Include="src\GameObject\SpriteSheet.h" />
     <ClInclude Include="src\GameObject\Text.h" />
     <ClInclude Include="src\GameObject\Texture.h" />
     <ClInclude Include="src\GameStates\GameStatebase.h" />

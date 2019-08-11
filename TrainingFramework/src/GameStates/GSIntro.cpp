@@ -42,7 +42,10 @@ void GSIntro::Init()
 	SoundManager::GetInstance()->AddSound("changesound");
 	SoundManager::GetInstance()->AddSound("selectsound");
 	SoundManager::GetInstance()->AddSound("onturnsound");
+
+	SoundManager::GetInstance()->AddSound("normalattacksound");
 	SoundManager::GetInstance()->AddSound("sienceattacksound");
+	SoundManager::GetInstance()->AddSound("itemattacksound");
 
 	SoundManager::GetInstance()->AddSound("enemyattacksound");
 	SoundManager::GetInstance()->AddSound("entermatchsound");

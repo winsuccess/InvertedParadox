@@ -15,6 +15,7 @@ GSPlay::GSPlay()
 	cooldownTimer = 30;
 	enableMovement = true;
 	actionOnce = true;
+	animOnce = false;
 }
 
 
@@ -43,27 +44,27 @@ void GSPlay::Init()
 	m_BackGround->SetSize(1667, screenheight);
 
 	//Player
-	texture = ResourceManagers::GetInstance()->GetTexture("play_player");
-	m_Player = std::make_shared<Player>(model, shader, texture);
+	shader = ResourceManagers::GetInstance()->GetShader("SpriteShader");
+	texture = ResourceManagers::GetInstance()->GetTexture("playeranim");
+	m_Player = std::make_shared<Player>(model, shader, texture, Vector2(640, 60), Vector2(40, 60), 11, 11, 0);
+	m_Player->SetActive(false);
 	m_Player->Set2DPosition(screenwidth / 2-60, screenheight / 2-10);
-	m_Player->SetSize(38, 60);
+	m_Player->SetSize(40, 60);
 
 	//DualZone
-	texture = ResourceManagers::GetInstance()->GetTexture("play_zone");
-	std::shared_ptr<DualZone> dz1 = std::make_shared<DualZone>(model, shader, texture);
+	texture = ResourceManagers::GetInstance()->GetTexture("play_portal");
+	std::shared_ptr<DualZone> dz1 = std::make_shared<DualZone>(model, shader, texture,Vector2(462,261),Vector2(154,261),0,2,1);
+	dz1->SetActive(true);
 	dz1->Set2DPosition(650, 280);
-	dz1->SetSize(50, 70);
+	dz1->SetSize(154/3, 261/3);
 	m_listZone.push_back(dz1);
 
-	std::shared_ptr<DualZone> dz2 = std::make_shared<DualZone>(model, shader, texture);
-	dz2->Set2DPosition(250, 150);
-	dz2->SetSize(50, 70);
-	m_listZone.push_back(dz2);
 
 #pragma region UIInit
 	//Health Bar
 	int hAlignment = 120;
 	texture = ResourceManagers::GetInstance()->GetTexture("play_healthbar");
+	shader = ResourceManagers::GetInstance()->GetShader("TextureShader");
 	m_healthBar = std::make_shared<Sprite2D>(model, shader, texture);
 	m_healthBar->Set2DPosition(hAlignment, 50);
 	m_healthBar->SetSize(240, 48);
@@ -156,7 +157,10 @@ void GSPlay::HandleKeyEvents(int key, bool bIsPressed)
 {
 	if (enableMovement) {
 		if (bIsPressed) {
+			m_Player->SetActive(true);
 			if (key == KEY_LEFT) {
+			//	direction = 1;
+				m_Player->SetAnim(0, 3, 2);
 				m_Player->Move(Player::Direction::LEFT);
 				m_BackGround->MoveView(1);
 				for (auto it : m_listZone)
@@ -165,6 +169,8 @@ void GSPlay::HandleKeyEvents(int key, bool bIsPressed)
 				}
 			}
 			if (key == KEY_RIGHT) {
+			//	direction = 2;
+				m_Player->SetAnim(4, 7, 2);
 				m_Player->Move(Player::Direction::RIGHT);
 				m_BackGround->MoveView(-1);
 				for (auto it : m_listZone)
@@ -172,13 +178,31 @@ void GSPlay::HandleKeyEvents(int key, bool bIsPressed)
 					it->MoveView(-1);
 				}
 			}
-			if (key == KEY_UP)
+			if (key == KEY_UP) {
+			//	direction = 3;
+				//m_Player->SetAnim(8, 12, 2);
+				//m_Player->SetActive(true);
 				m_Player->Move(Player::Direction::UP);
-			if (key == KEY_DOWN)
+			}
+			if (key == KEY_DOWN){
+			//	direction = 4;
+				//m_Player->SetAnim(12, 15, 2);
+				//m_Player->SetActive(true);
 				m_Player->Move(Player::Direction::DOWN);
+				}
 		}
 		if (!bIsPressed)
 		{
+			//m_Player->SetActive(false);
+			//if(direction ==1)
+			//	m_Player->SetAnim(0, 0, 1);
+			//else if(direction == 2)
+			//	m_Player->SetAnim(4, 4, 1);
+			//else if (direction == 3)
+			//	m_Player->SetAnim(8, 8, 1);
+			//else if (direction == 4)
+			//	m_Player->SetAnim(12, 12, 1);
+			//direction = 0;
 			m_Player->Move(Player::Direction::IDLE);
 			m_BackGround->MoveView(0);
 			for (auto it : m_listZone)
@@ -204,6 +228,13 @@ void GSPlay::Update(float deltaTime)
 	for (auto it : m_listButton)
 	{
 		it->Update(deltaTime);
+	}
+	for (auto dz : m_listZone)
+	{
+		if (dz->IsActive())
+		{
+			dz->Update(deltaTime);
+		}
 	}
 
 	if (m_Player->IsAlive()) {
@@ -240,12 +271,13 @@ void GSPlay::Draw()
 	m_BackGround->Draw();
 
 	//Player
-	m_Player->Draw();
+		m_Player->Draw();
+
+	//Zones
 	for (auto it : m_listZone)
 	{
 		it->Draw();
 	}
-	//Zones
 
 	//UI
 	m_healthBar->Draw();

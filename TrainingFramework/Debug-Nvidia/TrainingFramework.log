@@ -1,26 +1,12 @@
 ﻿D:\Visual Studio\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(452,5): warning MSB8028: The intermediate directory (Debug-Nvidia\) contains files shared from another project (TrainingFramework.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   cl : Command line warning D9035 : option 'Gm' has been deprecated and will be removed in a future release
-  GSMatch.cpp
-D:\Gameloft Documents\InvertedParadox\TrainingFramework\src\Helper\ThreadPool.h(37,13): warning C4477:  'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'std::thread::id'
-D:\Gameloft Documents\InvertedParadox\soloud\Include\soloud.h(37,1): warning C4005:  'WIN32_LEAN_AND_MEAN': macro redefinition
-D:\Gameloft Documents\InvertedParadox\Include\AMD\EGL\eglplatform.h(67): message :  see previous definition of 'WIN32_LEAN_AND_MEAN'
-D:\Gameloft Documents\InvertedParadox\TrainingFramework\src\GameStates\GSMatch.cpp(68,43): warning C4305:  'argument': truncation from 'double' to 'GLfloat'
-D:\Gameloft Documents\InvertedParadox\TrainingFramework\src\GameStates\GSMatch.cpp(278,29): warning C4244:  '-=': conversion from 'float' to 'int', possible loss of data
-D:\Gameloft Documents\InvertedParadox\TrainingFramework\src\GameStates\GSMatch.cpp(361,29): warning C4244:  '-=': conversion from 'float' to 'int', possible loss of data
-D:\Visual Studio\VC\Tools\MSVC\14.21.27702\include\memory(1527,71): warning C4244:  'argument': conversion from '_Ty' to 'float', possible loss of data
-D:\Visual Studio\VC\Tools\MSVC\14.21.27702\include\memory(1527,71): warning C4244:         with
-D:\Visual Studio\VC\Tools\MSVC\14.21.27702\include\memory(1527,71): warning C4244:         [
-D:\Visual Studio\VC\Tools\MSVC\14.21.27702\include\memory(1527,71): warning C4244:             _Ty=double
-D:\Visual Studio\VC\Tools\MSVC\14.21.27702\include\memory(1527,71): warning C4244:         ]
-D:\Visual Studio\VC\Tools\MSVC\14.21.27702\include\memory(1582): message :  see reference to function template instantiation 'std::_Ref_count_obj<_Ty>::_Ref_count_obj<std::shared_ptr<Shaders>&,std::shared_ptr<Font>&,const char(&)[1],TEXT_COLOR,double>(std::shared_ptr<Shaders> &,std::shared_ptr<Font> &,const char (&)[1],TEXT_COLOR &&,double &&)' being compiled
-D:\Visual Studio\VC\Tools\MSVC\14.21.27702\include\memory(1582): message :         with
-D:\Visual Studio\VC\Tools\MSVC\14.21.27702\include\memory(1582): message :         [
-D:\Visual Studio\VC\Tools\MSVC\14.21.27702\include\memory(1582): message :             _Ty=Text
-D:\Visual Studio\VC\Tools\MSVC\14.21.27702\include\memory(1582): message :         ]
-D:\Visual Studio\VC\Tools\MSVC\14.21.27702\include\memory(1582): message :  see reference to function template instantiation 'std::_Ref_count_obj<_Ty>::_Ref_count_obj<std::shared_ptr<Shaders>&,std::shared_ptr<Font>&,const char(&)[1],TEXT_COLOR,double>(std::shared_ptr<Shaders> &,std::shared_ptr<Font> &,const char (&)[1],TEXT_COLOR &&,double &&)' being compiled
-D:\Visual Studio\VC\Tools\MSVC\14.21.27702\include\memory(1582): message :         with
-D:\Visual Studio\VC\Tools\MSVC\14.21.27702\include\memory(1582): message :         [
-D:\Visual Studio\VC\Tools\MSVC\14.21.27702\include\memory(1582): message :             _Ty=Text
-D:\Visual Studio\VC\Tools\MSVC\14.21.27702\include\memory(1582): message :         ]
-D:\Gameloft Documents\InvertedParadox\TrainingFramework\src\GameStates\GSMatch.cpp(126): message :  see reference to function template instantiation 'std::shared_ptr<Text> std::make_shared<Text,std::shared_ptr<Shaders>&,std::shared_ptr<Font>&,const char(&)[1],TEXT_COLOR,double>(std::shared_ptr<Shaders> &,std::shared_ptr<Font> &,const char (&)[1],TEXT_COLOR &&,double &&)' being compiled
-  TrainingFramework.vcxproj -> D:\Gameloft Documents\InvertedParadox\\BIN-Nvidia\InvertedParadox.exe
+  SpriteSheet.cpp
+D:\Gameloft\InvertedParadox\TrainingFramework\src\GameObject\SpriteSheet.cpp(41,33): warning C4244:  '=': conversion from 'int' to 'GLfloat', possible loss of data
+D:\Gameloft\InvertedParadox\TrainingFramework\src\GameObject\SpriteSheet.cpp(42,33): warning C4244:  '=': conversion from 'int' to 'GLfloat', possible loss of data
+D:\Gameloft\InvertedParadox\TrainingFramework\src\GameObject\SpriteSheet.cpp(126,24): warning C4244:  'argument': conversion from 'int' to 'GLfloat', possible loss of data
+D:\Gameloft\InvertedParadox\TrainingFramework\src\GameObject\SpriteSheet.cpp(126,16): warning C4244:  'argument': conversion from 'int' to 'GLfloat', possible loss of data
+D:\Gameloft\InvertedParadox\TrainingFramework\src\GameObject\SpriteSheet.cpp(181,11): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Gameloft\InvertedParadox\TrainingFramework\src\GameObject\SpriteSheet.cpp(182,11): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Gameloft\InvertedParadox\TrainingFramework\src\GameObject\SpriteSheet.cpp(192,11): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Gameloft\InvertedParadox\TrainingFramework\src\GameObject\SpriteSheet.cpp(193,11): warning C4244:  'initializing': conversion from 'double' to 'float', possible loss of data
+  TrainingFramework.vcxproj -> D:\Gameloft\InvertedParadox\\BIN-Nvidia\InvertedParadox.exe

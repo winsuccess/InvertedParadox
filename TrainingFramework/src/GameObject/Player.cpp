@@ -1,13 +1,14 @@
 #include "Player.h"
 #include "DualZone.h"
 
-Player::Player(std::shared_ptr<Models>& model, std::shared_ptr<Shaders>& shader, std::shared_ptr<Texture>& texture)
-	:Sprite2D(model, shader, texture)
+Player::Player(std::shared_ptr<Models>& model, std::shared_ptr<Shaders>& shader, std::shared_ptr<Texture>& texture, Vector2& pictureSize, Vector2& spriteSize, int start, int end, float lengthTime)
+	:SpriteSheet(model, shader, texture, pictureSize, spriteSize, start, end, lengthTime)
 {
 	dir = Direction::IDLE;
 	m_speed = 80;
 	m_SizeCollider = 20;
 	m_isAlive = true;
+	isActive = false;
 }
 
 Player::~Player()
@@ -56,6 +57,22 @@ float Player::Distance(Vector2 pos, Vector2 target)
 	return sqrt((pos.x - target.x) * (pos.x - target.x) + (pos.y - target.y) * (pos.y - target.y));
 }
 
+
+bool Player::IsActive()
+{
+	return isActive;
+}
+
+void Player::SetActive(bool status)
+{
+	isActive = status;
+	if (isActive)
+	{
+		SpriteSheet::StartAnimation();
+		std::cout << "Start anim";
+	}
+}
+
 void Player::Update(GLfloat deltatime)
 {
 	if (!m_isAlive)
@@ -78,8 +95,11 @@ void Player::Update(GLfloat deltatime)
 		pos.y += m_speed * deltatime;
 		break;
 	}
-
+	if (isActive) {
+		SpriteSheet::Update(deltatime);
+	}
 	Set2DPosition(pos);
+
 }
 
 

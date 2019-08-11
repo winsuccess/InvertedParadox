@@ -34,6 +34,8 @@ private:
 	int cooldownTimer;
 	bool enableMovement;
 	bool actionOnce;
+	int direction = 0;
+	bool animOnce;
 	std::shared_ptr<Camera> m_Camera;
 	std::shared_ptr<Map> m_BackGround;
 	std::shared_ptr<Text>  m_score;

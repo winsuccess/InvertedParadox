@@ -26,7 +26,7 @@ public:
 	void RemoveModel(const std::string& name);
 	void RemoveTexture(const std::string& name);
 	void RemoveFont(const std::string& name);
-	
+
 	std::shared_ptr<Shaders> GetShader(const std::string& name);
 	std::shared_ptr<Texture> GetTexture(const std::string& name);
 	std::shared_ptr<Models> GetModel(const std::string& name);

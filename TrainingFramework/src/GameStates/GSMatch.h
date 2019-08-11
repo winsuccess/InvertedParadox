@@ -54,6 +54,10 @@ private:
 	std::shared_ptr<Enemy> m_Monster;
 
 	std::shared_ptr<Sprite2D> m_PlayerStats;
+	std::shared_ptr<Sprite2D> m_GumballHealthBar;
+	std::shared_ptr<Sprite2D> m_AnaisHealthBar;
+	std::shared_ptr<Sprite2D> m_DarwinHealthBar;
+
 	std::shared_ptr<Sprite2D> m_ChoicePanel;
 	std::shared_ptr<Sprite2D> m_ChoiceHandle;
 	std::shared_ptr<Sprite2D> m_TurnHandle;

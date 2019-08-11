@@ -8,7 +8,7 @@ GSMatch::GSMatch()
 #pragma region  Init
 	ms = MatchState::STATE_PLAYERTURN;
 	playerChoice = 1;
-	cooldownTimer = 250;
+	cooldownTimer = 220;
 	actionOnce = false;
 	attackG = false;
 	attackD = false;
@@ -61,18 +61,36 @@ void GSMatch::Init()
 	m_Anais->SetSize(185 / 2, 202 / 2);
 #pragma endregion
 
-	//Enemys
-	texture = ResourceManagers::GetInstance()->GetTexture("match_monster1");
-	m_Monster = std::make_shared<Enemy>(model, shader, texture);
-	m_Monster->Set2DPosition(630, 260);
-	m_Monster->SetSize(508 / 1.25, 315 / 1.25);
-
+#pragma region  Characters Stats
 
 	//Player Stats Panel
 	texture = ResourceManagers::GetInstance()->GetTexture("match_demo_stats");
 	m_PlayerStats = std::make_shared<Sprite2D>(model, shader, texture);
 	m_PlayerStats->Set2DPosition(screenwidth / 2, 450);
 	m_PlayerStats->SetSize(600, 112);
+
+	//Gumball Stats
+	texture = ResourceManagers::GetInstance()->GetTexture("match_healthbar");
+	m_GumballHealthBar = std::make_shared<Sprite2D>(model, shader, texture);
+	m_GumballHealthBar->Set2DPosition(412, 422);
+	m_GumballHealthBar->SetSize(220, 7);
+	//Anais Stats
+	texture = ResourceManagers::GetInstance()->GetTexture("match_healthbar");
+	m_AnaisHealthBar = std::make_shared<Sprite2D>(model, shader, texture);
+	m_AnaisHealthBar->Set2DPosition(412, 455);
+	m_AnaisHealthBar->SetSize(220, 7);
+	//Darwin Stats
+	texture = ResourceManagers::GetInstance()->GetTexture("match_healthbar");
+	m_DarwinHealthBar = std::make_shared<Sprite2D>(model, shader, texture);
+	m_DarwinHealthBar->Set2DPosition(412, 489);
+	m_DarwinHealthBar->SetSize(220, 7);
+#pragma endregion
+
+	//Enemys
+	texture = ResourceManagers::GetInstance()->GetTexture("match_monster1");
+	m_Monster = std::make_shared<Enemy>(model, shader, texture);
+	m_Monster->Set2DPosition(630, 260);
+	m_Monster->SetSize(508 / 1.25, 315 / 1.25);
 
 	//Turn Handle
 	texture = ResourceManagers::GetInstance()->GetTexture("match_turn_handle");
@@ -152,7 +170,7 @@ void GSMatch::Init()
 
 #pragma region  Init Sounds
 	SoundManager::GetInstance()->PauseSound("menumusic");
-	SoundManager::GetInstance()->PlaySound("bgmusic",true);
+	SoundManager::GetInstance()->PlaySound("bgmusic", true);
 #pragma endregion
 
 
@@ -238,14 +256,14 @@ void GSMatch::Update(float deltaTime)
 		//	SoundManager::GetInstance()->PlaySound("onturnsound");
 		actionOnce = true;
 		if (cTurn == 1) {
-			m_TurnHandle->Set2DPosition(m_Gumball->Get2DPosition().x-5, m_Gumball->Get2DPosition().y - 100);
+			m_TurnHandle->Set2DPosition(m_Gumball->Get2DPosition().x - 5, m_Gumball->Get2DPosition().y - 100);
 		}
 		else if (cTurn == 2) {
 			m_TurnHandle->Set2DPosition(m_Anais->Get2DPosition().x, m_Anais->Get2DPosition().y - 90);
 		}
 		else
 		{
-			m_TurnHandle->Set2DPosition(m_Darwin->Get2DPosition().x-10, m_Darwin->Get2DPosition().y - 100);
+			m_TurnHandle->Set2DPosition(m_Darwin->Get2DPosition().x - 10, m_Darwin->Get2DPosition().y - 100);
 		}
 		break;
 	case GSMatch::STATE_PLAYERATTACK:
@@ -293,12 +311,12 @@ void GSMatch::Update(float deltaTime)
 				ms = STATE_ENEMYTURN;
 			}
 		}
-			break;
+		break;
 	case GSMatch::STATE_ENEMYTURN:
 		//if (!actionOnce)
 		//	SoundManager::GetInstance()->PlaySound("onturnsound");
 		actionOnce = true;
-		m_TurnHandle->Set2DPosition(m_Monster->Get2DPosition().x, m_Monster->Get2DPosition().y - 180);
+		m_TurnHandle->Set2DPosition(m_Monster->Get2DPosition().x+30, m_Monster->Get2DPosition().y - 180);
 
 		r = rand() % 2;
 		rd = rand() % 10 + (m_Monster->GetDamage() - 5);
@@ -317,6 +335,8 @@ void GSMatch::Update(float deltaTime)
 					std::string score = stream.str();
 					m_DamageToGumball->setText(score);
 					attackG = true;
+					m_GumballHealthBar->SetSize(m_GumballHealthBar->GetSize().x - m_GumballHealthBar->GetSize().x / 250 * rd, m_GumballHealthBar->GetSize().y);
+					m_GumballHealthBar->Set2DPosition(m_GumballHealthBar->Get2DPosition().x - 220 / 250 * rd, m_GumballHealthBar->Get2DPosition().y);
 				}
 				else if (r == 1) {
 					m_Anais->SetHp(-2 * rd);
@@ -325,6 +345,8 @@ void GSMatch::Update(float deltaTime)
 					std::string score = stream.str();
 					m_DamageToAnais->setText(score);
 					attackA = true;
+					m_AnaisHealthBar->SetSize(m_AnaisHealthBar->GetSize().x - m_AnaisHealthBar->GetSize().x / 250 * rd, m_AnaisHealthBar->GetSize().y);
+					m_AnaisHealthBar->Set2DPosition(m_AnaisHealthBar->Get2DPosition().x - 220 /250 * rd, m_AnaisHealthBar->Get2DPosition().y);
 				}
 				else {
 					m_Darwin->SetHp(-2 * rd);
@@ -333,10 +355,13 @@ void GSMatch::Update(float deltaTime)
 					std::string score = stream.str();
 					m_DamageToDarwin->setText(score);
 					attackD = true;
+					m_DarwinHealthBar->SetSize(m_DarwinHealthBar->GetSize().x - m_DarwinHealthBar->GetSize().x / 250 * rd, m_DarwinHealthBar->GetSize().y);
+					m_DarwinHealthBar->Set2DPosition(m_DarwinHealthBar->Get2DPosition().x - 220 /250 * rd, m_DarwinHealthBar->Get2DPosition().y);
+
 				}
 			}
-			else
-			{
+				else
+				{
 				m_Gumball->SetHp(-rd);
 				m_Darwin->SetHp(-rd);
 				m_Anais->SetHp(-rd);
@@ -355,6 +380,12 @@ void GSMatch::Update(float deltaTime)
 				attackG = true;
 				attackA = true;
 				attackD = true;
+				m_GumballHealthBar->SetSize(m_GumballHealthBar->GetSize().x - m_GumballHealthBar->GetSize().x / 500 * rd, m_GumballHealthBar->GetSize().y);
+				m_AnaisHealthBar->SetSize(m_AnaisHealthBar->GetSize().x - m_AnaisHealthBar->GetSize().x / 500 * rd, m_AnaisHealthBar->GetSize().y);
+				m_DarwinHealthBar->SetSize(m_DarwinHealthBar->GetSize().x - m_DarwinHealthBar->GetSize().x / 500 * rd, m_DarwinHealthBar->GetSize().y);
+				m_GumballHealthBar->Set2DPosition(m_GumballHealthBar->Get2DPosition().x -  220 / 500 * rd, m_GumballHealthBar->Get2DPosition().y);
+				m_AnaisHealthBar->Set2DPosition(m_AnaisHealthBar->Get2DPosition().x - 220 / 500 * rd, m_AnaisHealthBar->Get2DPosition().y);
+				m_DarwinHealthBar->Set2DPosition(m_DarwinHealthBar->Get2DPosition().x - 220 / 500 * rd, m_DarwinHealthBar->Get2DPosition().y);
 			}
 			actionOnce = false;
 		}
@@ -375,7 +406,7 @@ void GSMatch::Update(float deltaTime)
 		break;
 	default:
 		break;
-		}
+	}
 
 #pragma region Update Stats
 	if (updateHealth) {
@@ -408,54 +439,61 @@ void GSMatch::Update(float deltaTime)
 #pragma endregion
 
 
-		//When you win
-		if (!m_Monster->IsAlive()) {
-			std::cout << "YOU WIN THE MATCH!";
-			GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Play);
-		}
-
-		//When you lose
-
+	//When you win
+	if (!m_Monster->IsAlive()) {
+		std::cout << "YOU WIN THE MATCH!";
+		GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Play);
 	}
 
-	void GSMatch::Draw()
-	{
-		m_BackGround->Draw();
+	//When you lose
 
-		m_Gumball->Draw();
-		m_Anais->Draw();
-		m_Darwin->Draw();
-		m_Monster->Draw();
+}
 
-		//UI
-		m_PlayerStats->Draw();
-		m_TurnHandle->Draw();
-		m_MonsterHealth->Draw();
-		m_GumballHealth->Draw();
-		m_AnaisHealth->Draw();
-		m_DarwinHealth->Draw();
-		if (ms == GSMatch::STATE_PLAYERATTACK && showDamageRecieved)
-			m_DamageToMonster->Draw();
-		if (showDamageRecieved) {
-			if (attackG)
-			{
-				m_DamageToGumball->Draw();
-			}
-			if (attackA)
-			{
-				m_DamageToAnais->Draw();
-			}
-			if (attackD)
-			{
-				m_DamageToDarwin->Draw();
-			}
+void GSMatch::Draw()
+{
+	m_BackGround->Draw();
+
+	m_Gumball->Draw();
+	m_Anais->Draw();
+	m_Darwin->Draw();
+	m_Monster->Draw();
+
+	//UI
+	m_PlayerStats->Draw();
+	m_TurnHandle->Draw();
+
+	m_MonsterHealth->Draw();
+
+	m_GumballHealth->Draw();
+	m_AnaisHealth->Draw();
+	m_DarwinHealth->Draw();
+
+	m_GumballHealthBar->Draw();
+	m_AnaisHealthBar->Draw();
+	m_DarwinHealthBar->Draw();
+
+	if (ms == GSMatch::STATE_PLAYERATTACK && showDamageRecieved)
+		m_DamageToMonster->Draw();
+	if (showDamageRecieved) {
+		if (attackG)
+		{
+			m_DamageToGumball->Draw();
 		}
-
-		//Draw Player Choice Panel
-		if (ms == MatchState::STATE_PLAYERTURN) {
-			m_ChoicePanel->Draw();
-			for (auto it : m_listChoiceButton)
-				it->Draw();
-			m_ChoiceHandle->Draw();
+		if (attackA)
+		{
+			m_DamageToAnais->Draw();
+		}
+		if (attackD)
+		{
+			m_DamageToDarwin->Draw();
 		}
 	}
+
+	//Draw Player Choice Panel
+	if (ms == MatchState::STATE_PLAYERTURN) {
+		m_ChoicePanel->Draw();
+		for (auto it : m_listChoiceButton)
+			it->Draw();
+		m_ChoiceHandle->Draw();
+	}
+}
