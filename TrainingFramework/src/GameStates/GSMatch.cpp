@@ -276,26 +276,32 @@ void GSMatch::Update(float deltaTime)
 		if (actionOnce) {
 			updateHealth = false;
 			if (playerChoice == 1) {
+				rd = rand() % 5 + 16;
 				SoundManager::GetInstance()->PlaySound("magicattacksound", false);
 				std::stringstream stream;
-				m_Monster->SetHp(-10);
-				stream << std::fixed << std::setprecision(0) << -10;
+				m_Monster->SetHp(-rd);
+				stream << std::fixed << std::setprecision(0) << -rd;
 				std::string score = stream.str();
 				m_DamageToMonster->setText(score);
 			}
 			if (playerChoice == 2) {
 				SoundManager::GetInstance()->PlaySound("normalattacksound", false);
-				m_Monster->SetHp(-20);
+				m_Monster->SetHp(-18);
 				std::stringstream stream;
-				stream << std::fixed << std::setprecision(0) << -20;
+				stream << std::fixed << std::setprecision(0) << -18;
 				std::string score = stream.str();
 				m_DamageToMonster->setText(score);
 			}
 			if (playerChoice == 3) {
+				r = rand() % 9;
+				if (r <= 5)
+					rd = 30;
+				else
+					rd = 10;
 				SoundManager::GetInstance()->PlaySound("sienceattacksound", false);
-				m_Monster->SetHp(-30);
+				m_Monster->SetHp(-rd);
 				std::stringstream stream;
-				stream << std::fixed << std::setprecision(0) << -30;
+				stream << std::fixed << std::setprecision(0) << -rd;
 				std::string score = stream.str();
 				m_DamageToMonster->setText(score);
 			}
@@ -418,8 +424,12 @@ void GSMatch::Update(float deltaTime)
 		}
 		break;
 	case GSMatch::STATE_ENDBATTLE:
-		if(actionOnce)
+		m_TurnHandle->Set2DPosition(-100, -100);
+		m_Monster->SetAlive(false);
+		if (actionOnce) {
 			SoundManager::GetInstance()->PlaySound("weditit", false);
+			actionOnce = false;
+		}
 		cooldownTimer -= deltaTime;
 		if (cooldownTimer <= 0) {
 			GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Play);
@@ -476,13 +486,15 @@ void GSMatch::Draw()
 	m_Gumball->Draw();
 	m_Anais->Draw();
 	m_Darwin->Draw();
-	m_Monster->Draw();
+	if (m_Monster->IsAlive())
+		m_Monster->Draw();
 
 	//UI
 	m_PlayerStats->Draw();
 	m_TurnHandle->Draw();
 
-	m_MonsterHealth->Draw();
+	if(m_Monster->IsAlive())
+		m_MonsterHealth->Draw();
 
 	m_GumballHealth->Draw();
 	m_AnaisHealth->Draw();

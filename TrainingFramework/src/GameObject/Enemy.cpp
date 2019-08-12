@@ -32,14 +32,15 @@ bool Enemy::IsAlive() {
 	return m_isAlive;
 }
 
-
+void Enemy::SetAlive(bool isAlive)
+{
+	m_isAlive = isAlive;
+}
 
 void Enemy::Update(GLfloat deltatime)
 {
 	if (!m_isAlive)
 		return;
-	if (m_HP <= 0)
-		m_isAlive = false;
 
 }
 

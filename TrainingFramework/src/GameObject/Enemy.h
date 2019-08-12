@@ -12,6 +12,7 @@ public:
 	int GetHp();
 	int GetDamage();
 	bool	IsAlive();
+	void SetAlive(bool isAlive);
 	void	Update(GLfloat deltatime) override;
 
 private:
