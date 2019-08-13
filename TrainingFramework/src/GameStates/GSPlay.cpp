@@ -58,7 +58,7 @@ void GSPlay::Init()
 	texture = ResourceManagers::GetInstance()->GetTexture("play_portal");
 	std::shared_ptr<DualZone> dz1 = std::make_shared<DualZone>(model, shader, texture,Vector2(462,261),Vector2(154,261),0,2,1);
 	dz1->SetActive(true);
-	dz1->Set2DPosition(-324, 370);
+	dz1->Set2DPosition(-335, 370);
 	dz1->SetSize(154/3, 261/3);
 	m_listZone.push_back(dz1);
 

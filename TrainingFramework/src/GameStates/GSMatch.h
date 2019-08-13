@@ -3,6 +3,7 @@
 #include "GameButton.h"
 #include "Character.h"
 #include "Enemy.h"
+#include "Clip.h"
 
 class GSMatch :
 	public GameStateBase
@@ -49,6 +50,7 @@ private:
 
 
 	std::shared_ptr<Sprite2D> m_BackGround;
+	std::shared_ptr<Clip> m_VictoryScreen;
 
 	std::shared_ptr<Character> m_Gumball;
 	std::shared_ptr<Character> m_Darwin;

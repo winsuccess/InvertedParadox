@@ -18,9 +18,9 @@ GSMatch::GSMatch()
 	rd = 0;
 	showDamageRecieved = false;
 	updateHealth = true;
-	m_MonsterHealthBarlength = 600;
+	m_MonsterHealthBarlength = 600.0f;
 	enemyhealthpos = 690;
-	m_CharacterHealthBarlength = 220;
+	m_CharacterHealthBarlength = 220.0f;
 #pragma endregion
 }
 
@@ -44,10 +44,19 @@ void GSMatch::Init()
 	m_BackGround->Set2DPosition(screenwidth / 2, screenheight / 2);
 	m_BackGround->SetSize(screenwidth, screenheight);
 
+	//VictoryScreen
+	shader = ResourceManagers::GetInstance()->GetShader("SpriteShader");
+	texture = ResourceManagers::GetInstance()->GetTexture("match_winneranim");
+	m_VictoryScreen = std::make_shared<Clip>(model, shader, texture, Vector2(48, 36), Vector2(8, 6), 0, 35, 3);
+	m_VictoryScreen->SetRotation(180);
+	m_VictoryScreen->Set2DPosition(screenwidth / 2, screenheight / 2);
+	m_VictoryScreen->SetSize(screenwidth, screenheight);
+
 #pragma region Characters
 
 	//Characters
 	//Gumball
+	shader = ResourceManagers::GetInstance()->GetShader("TextureShader");
 	texture = ResourceManagers::GetInstance()->GetTexture("match_gumball");
 	m_Gumball = std::make_shared<Character>(model, shader, texture);
 	m_Gumball->Set2DPosition(270, 318);
@@ -91,7 +100,7 @@ void GSMatch::Init()
 
 	//Enemys
 	shader = ResourceManagers::GetInstance()->GetShader("SpriteShader");
-	texture = ResourceManagers::GetInstance()->GetTexture("match_monsteranim3");
+	texture = ResourceManagers::GetInstance()->GetTexture("match_monsteranim");
 	m_Monster = std::make_shared<Enemy>(model, shader, texture, Vector2(1524,158), Vector2(254, 158), 0, 0, 1);
 	m_Monster->SetActive(false);
 	m_Monster->Set2DPosition(625, 265);
@@ -158,8 +167,8 @@ void GSMatch::Init()
 
 	//Enemy Health
 	font = ResourceManagers::GetInstance()->GetFont("ttpixel");
-	m_MonsterHealth = std::make_shared< Text>(shader, font, "", TEXT_COLOR::RED, 0.6);
-	m_MonsterHealth->Set2DPosition(690, 82);
+	m_MonsterHealth = std::make_shared< Text>(shader, font, "", TEXT_COLOR::RED, 1);
+	m_MonsterHealth->Set2DPosition(85, 140);
 	m_DamageToMonster = std::make_shared< Text>(shader, font, "", TEXT_COLOR::RED, 0.7);
 	m_DamageToMonster->Set2DPosition(475, 175);
 
@@ -306,14 +315,14 @@ void GSMatch::Update(float deltaTime)
 				stream << std::fixed << std::setprecision(0) << -rd;
 				std::string score = stream.str();
 				m_DamageToMonster->setText(score);
+				float posX = m_MonsterHealthBar->Get2DPosition().x;
 				if (m_Monster->GetHp() < 50)
 					m_MonsterHealthBar->SetTexture(ResourceManagers::GetInstance()->GetTexture("match_enemyhealthbar2"));
 				if(m_Monster->GetHp()==0)
 					m_MonsterHealthBar->SetSize(0, m_MonsterHealthBar->GetSize().y);
 				else 
-					m_MonsterHealthBar->SetSize(m_MonsterHealthBar->GetSize().x - m_MonsterHealthBarlength / 175.0f * rd, m_MonsterHealthBar->GetSize().y);
-				m_MonsterHealthBar->Set2DPosition(m_MonsterHealthBar->Get2DPosition().x - m_MonsterHealthBarlength / 175.0f / 2 * rd, m_MonsterHealthBar->Get2DPosition().y);
-				m_MonsterHealth->Set2DPosition(m_MonsterHealthBar->Get2DPosition().x/2 +340, 82);
+					m_MonsterHealthBar->SetSize(m_MonsterHealthBar->GetSize().x - m_MonsterHealthBarlength / 175.0f * float(rd), m_MonsterHealthBar->GetSize().y);
+				m_MonsterHealthBar->Set2DPosition(posX - m_MonsterHealthBarlength / 175.0f / 2.0f * float(rd), m_MonsterHealthBar->Get2DPosition().y);
 				enemyhealthpos -= 690 / 175.0f / 4 * rd;
 			}
 			if (playerChoice == 2) {
@@ -326,14 +335,14 @@ void GSMatch::Update(float deltaTime)
 				stream << std::fixed << std::setprecision(0) << -18;
 				std::string score = stream.str();
 				m_DamageToMonster->setText(score);
+				float posX = m_MonsterHealthBar->Get2DPosition().x;
 				if (m_Monster->GetHp() < 50)
 					m_MonsterHealthBar->SetTexture(ResourceManagers::GetInstance()->GetTexture("match_enemyhealthbar2"));
 				if (m_Monster->GetHp() == 0)
 					m_MonsterHealthBar->SetSize(0, m_MonsterHealthBar->GetSize().y);
 				else
-					m_MonsterHealthBar->SetSize(m_MonsterHealthBar->GetSize().x - m_MonsterHealthBarlength / 175.0f * 18, m_MonsterHealthBar->GetSize().y);
-				m_MonsterHealthBar->Set2DPosition(m_MonsterHealthBar->Get2DPosition().x - m_MonsterHealthBarlength / 175.0f /2* 18, m_MonsterHealthBar->Get2DPosition().y);
-				m_MonsterHealth->Set2DPosition(m_MonsterHealthBar->Get2DPosition().x/2 + 340, 82);
+					m_MonsterHealthBar->SetSize(m_MonsterHealthBar->GetSize().x - m_MonsterHealthBarlength / 175.0f * 18.0f, m_MonsterHealthBar->GetSize().y);
+				m_MonsterHealthBar->Set2DPosition(posX - m_MonsterHealthBarlength / 175.0f / 2.0f * 18.0f, m_MonsterHealthBar->Get2DPosition().y);;
 				enemyhealthpos -= 690 / 175.0f / 4 * 18;
 			}
 			if (playerChoice == 3) {
@@ -351,14 +360,14 @@ void GSMatch::Update(float deltaTime)
 				stream << std::fixed << std::setprecision(0) << -rd;
 				std::string score = stream.str();
 				m_DamageToMonster->setText(score);
+				float posX = m_MonsterHealthBar->Get2DPosition().x;
 				if (m_Monster->GetHp() < 50)
 					m_MonsterHealthBar->SetTexture(ResourceManagers::GetInstance()->GetTexture("match_enemyhealthbar2"));
 				if (m_Monster->GetHp() == 0)
 					m_MonsterHealthBar->SetSize(0, m_MonsterHealthBar->GetSize().y);
 				else
-					m_MonsterHealthBar->SetSize(m_MonsterHealthBar->GetSize().x - m_MonsterHealthBarlength / 175.0f * rd, m_MonsterHealthBar->GetSize().y);
-				m_MonsterHealthBar->Set2DPosition(m_MonsterHealthBar->Get2DPosition().x - m_MonsterHealthBarlength / 175.0f / 2 * rd, m_MonsterHealthBar->Get2DPosition().y);
-				m_MonsterHealth->Set2DPosition(m_MonsterHealthBar->Get2DPosition().x/2 + 340, 82);
+					m_MonsterHealthBar->SetSize(m_MonsterHealthBar->GetSize().x - m_MonsterHealthBarlength / 175.0f * float(rd), m_MonsterHealthBar->GetSize().y);
+				m_MonsterHealthBar->Set2DPosition(posX - m_MonsterHealthBarlength / 175.0f / 2.0f * float(rd), m_MonsterHealthBar->Get2DPosition().y);
 				enemyhealthpos -= 690 / 175.0f / 4 * rd;
 			}
 			m_Monster->GetHurt();
@@ -379,7 +388,7 @@ void GSMatch::Update(float deltaTime)
 			cooldownTimer = 150;
 			if (m_Monster->GetHp() <= 0) {
 				actionOnce = true;
-				cooldownTimer = 300;
+				cooldownTimer = 200;
 				ms = STATE_ENDBATTLE;
 			}
 			else if (cTurn == 1 || cTurn == 2) {
@@ -494,9 +503,10 @@ void GSMatch::Update(float deltaTime)
 		}
 		break;
 	case GSMatch::STATE_ENDBATTLE:
-		m_TurnHandle->Set2DPosition(-100, -100);
 		m_Monster->SetAlive(false);
 		if (actionOnce) {
+			m_VictoryScreen->SetActive(true);
+			m_VictoryScreen->SetActive(true);
 			SoundManager::GetInstance()->PauseSound("bgmusic");
 			SoundManager::GetInstance()->PlaySound("weditit");
 			actionOnce = false;
@@ -546,58 +556,65 @@ void GSMatch::Update(float deltaTime)
 
 	//When you lose
 
+	if (m_VictoryScreen->IsActive())
+		m_VictoryScreen->Update(deltaTime);
+
 }
 
 void GSMatch::Draw()
 {
-	m_BackGround->Draw();
-
-	m_Gumball->Draw();
-	m_Anais->Draw();
-	m_Darwin->Draw();
-	if (ms!= GSMatch::STATE_ENDBATTLE)
+	if (ms != GSMatch::STATE_ENDBATTLE) {
+		m_BackGround->Draw();
+		m_Gumball->Draw();
+		m_Anais->Draw();
+		m_Darwin->Draw();
 		m_Monster->Draw();
 
-	//UI
-	m_PlayerStats->Draw();
-	m_TurnHandle->Draw();
+		//UI
+		m_PlayerStats->Draw();
+		m_TurnHandle->Draw();
 
-	if (m_Monster->IsAlive()) {
-		m_MonsterName->Draw();
-		m_MonsterHealth->Draw();
-		m_MonsterHealthBar->Draw();
+		if (m_Monster->IsAlive()) {
+			m_MonsterName->Draw();
+			m_MonsterHealth->Draw();
+			m_MonsterHealthBar->Draw();
+		}
+
+		m_GumballHealth->Draw();
+		m_AnaisHealth->Draw();
+		m_DarwinHealth->Draw();
+
+		m_GumballHealthBar->Draw();
+		m_AnaisHealthBar->Draw();
+		m_DarwinHealthBar->Draw();
+
+		if (ms == GSMatch::STATE_PLAYERATTACK && showDamageRecieved)
+			m_DamageToMonster->Draw();
+		if (showDamageRecieved) {
+			if (attackG)
+			{
+				m_DamageToGumball->Draw();
+			}
+			if (attackA)
+			{
+				m_DamageToAnais->Draw();
+			}
+			if (attackD)
+			{
+				m_DamageToDarwin->Draw();
+			}
+		}
+
+		//Draw Player Choice Panel
+		if (ms == MatchState::STATE_PLAYERTURN) {
+			m_ChoicePanel->Draw();
+			for (auto it : m_listChoiceButton)
+				it->Draw();
+			m_ChoiceHandle->Draw();
+		}
 	}
-
-	m_GumballHealth->Draw();
-	m_AnaisHealth->Draw();
-	m_DarwinHealth->Draw();
-
-	m_GumballHealthBar->Draw();
-	m_AnaisHealthBar->Draw();
-	m_DarwinHealthBar->Draw();
-
-	if (ms == GSMatch::STATE_PLAYERATTACK && showDamageRecieved)
-		m_DamageToMonster->Draw();
-	if (showDamageRecieved) {
-		if (attackG)
-		{
-			m_DamageToGumball->Draw();
-		}
-		if (attackA)
-		{
-			m_DamageToAnais->Draw();
-		}
-		if (attackD)
-		{
-			m_DamageToDarwin->Draw();
-		}
-	}
-
-	//Draw Player Choice Panel
-	if (ms == MatchState::STATE_PLAYERTURN) {
-		m_ChoicePanel->Draw();
-		for (auto it : m_listChoiceButton)
-			it->Draw();
-		m_ChoiceHandle->Draw();
+	else {
+		//Draw Victory Screen
+		m_VictoryScreen->Draw();
 	}
 }

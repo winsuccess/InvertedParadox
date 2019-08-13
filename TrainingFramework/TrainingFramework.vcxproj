@@ -268,6 +268,7 @@
     <ClCompile Include="src\GameManager\ResourceManagers.cpp" />
     <ClCompile Include="src\GameManager\SoundManager.cpp" />
     <ClCompile Include="src\GameObject\Character.cpp" />
+    <ClCompile Include="src\GameObject\Clip.cpp" />
     <ClCompile Include="src\GameObject\DualZone.cpp" />
     <ClCompile Include="src\GameObject\Enemy.cpp" />
     <ClCompile Include="src\GameObject\Font.cpp" />
@@ -299,6 +300,7 @@
     <ClInclude Include="src\GameManager\SoundManager.h" />
     <ClInclude Include="src\GameObject\BaseObject.h" />
     <ClInclude Include="src\GameObject\Character.h" />
+    <ClInclude Include="src\GameObject\Clip.h" />
     <ClInclude Include="src\GameObject\DualZone.h" />
     <ClInclude Include="src\GameObject\Enemy.h" />
     <ClInclude Include="src\GameObject\Font.h" />
