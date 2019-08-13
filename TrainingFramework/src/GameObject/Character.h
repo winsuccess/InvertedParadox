@@ -13,13 +13,17 @@ public:
 	void SetHp(int x);
 	int GetHp();
 	bool	IsAlive();
+	void GetHurt();
 	void	Update(GLfloat deltatime) override;
+	void Hurt(GLfloat deltaTime);
 
 private:
 
+	int cooldownTimer;
 	int m_HP;
 	int m_MP;
 	int m_level;
 	bool	m_isAlive;
+	bool isHurt;
 
 };

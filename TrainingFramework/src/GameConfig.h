@@ -94,6 +94,8 @@
 #define KEY_MOVE_BACKWARD		83	// key s
 #define KEY_ENTER				13	// key Enter
 #define KEY_SPACEBAR			32	// key Space
+#define KEY_TAB					9	// key Tab
+
 
 
 #elif ANDROID

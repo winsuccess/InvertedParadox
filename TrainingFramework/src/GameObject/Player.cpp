@@ -69,7 +69,6 @@ void Player::SetActive(bool status)
 	if (isActive)
 	{
 		SpriteSheet::StartAnimation();
-		std::cout << "Start anim";
 	}
 }
 

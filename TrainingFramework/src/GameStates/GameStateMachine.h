@@ -10,6 +10,7 @@ enum StateTypes
 	STATE_INVALID = 0,
 	STATE_Intro,
 	STATE_Menu,
+	STATE_Credits,
 	STATE_Play,
 	STATE_Match
 };

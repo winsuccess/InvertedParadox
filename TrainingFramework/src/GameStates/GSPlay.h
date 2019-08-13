@@ -36,6 +36,9 @@ private:
 	bool actionOnce;
 	int direction = 0;
 	bool animOnce;
+	bool showMenu;
+	int playerChoice;
+
 	std::shared_ptr<Camera> m_Camera;
 	std::shared_ptr<Map> m_BackGround;
 	std::shared_ptr<Text>  m_score;
@@ -44,5 +47,9 @@ private:
 	std::shared_ptr<Sprite2D> m_manaBar;
 	std::shared_ptr<Player> m_Player;
 	std::vector<std::shared_ptr<DualZone>>	m_listZone;
+
+	std::shared_ptr<Sprite2D> m_menuPanel;
+	std::vector<std::shared_ptr<Sprite2D>>	m_listMenuButton;
+	std::shared_ptr<Sprite2D> m_menuHandle;
 };
 

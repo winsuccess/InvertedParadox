@@ -45,6 +45,7 @@ private:
 	bool updateHealth;
 	int cTurn;
 	bool showDamageRecieved;
+	float enemyhealthpos;
 
 
 	std::shared_ptr<Sprite2D> m_BackGround;
@@ -60,6 +61,10 @@ private:
 	std::shared_ptr<Sprite2D> m_AnaisHealthBar;
 	std::shared_ptr<Sprite2D> m_DarwinHealthBar;
 
+	std::shared_ptr<Sprite2D> m_MonsterHealthBar;
+	float m_MonsterHealthBarlength;
+	int m_CharacterHealthBarlength;
+
 	std::shared_ptr<Sprite2D> m_ChoicePanel;
 	std::shared_ptr<Sprite2D> m_ChoiceHandle;
 	std::shared_ptr<Sprite2D> m_TurnHandle;
@@ -73,6 +78,6 @@ private:
 	std::shared_ptr<Text> m_DamageToAnais;
 	std::shared_ptr<Text> m_MonsterHealth;
 	std::shared_ptr<Text> m_DamageToMonster;
-
+	std::shared_ptr<Text> m_MonsterName;
 };
 

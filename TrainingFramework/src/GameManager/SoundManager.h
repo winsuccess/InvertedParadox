@@ -5,6 +5,7 @@
 #include "Helper/ThreadPool.h"
 #include "soloud.h"
 #include "soloud_wav.h"
+#include <map>
 
 class SoundManager : public CSingleton<SoundManager>
 {
@@ -12,8 +13,8 @@ public:
 	SoundManager();
 	~SoundManager();
 
-	void AddSound(const std::string& name);
-	void PlaySound(const std::string& name, bool loop = false);
+	void AddSound(const std::string& name, bool loop = false);
+	void PlaySound(const std::string& name);
 	void PauseSound(const std::string& name);
 
 private:

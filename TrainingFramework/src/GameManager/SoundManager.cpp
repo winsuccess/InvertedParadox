@@ -1,6 +1,6 @@
 #include "SoundManager.h"
 #include <iostream>
-
+#include<map>
 
 SoundManager::SoundManager()
 {
@@ -12,9 +12,11 @@ SoundManager::SoundManager()
 
 SoundManager::~SoundManager()
 {
+	m_MapWave.clear();
+	m_Soloud->deinit();
 }
 
-void SoundManager::AddSound(const std::string& name)
+void SoundManager::AddSound(const std::string& name,bool loop)
 {
 	std::cout << "Add Sound";
 	auto it = m_MapWave.find(name);
@@ -27,10 +29,10 @@ void SoundManager::AddSound(const std::string& name)
 	wave = std::make_shared<SoLoud::Wav>();
 	wave->load(wav.c_str()); // Load a wave file
 	m_MapWave.insert(std::pair<std::string, std::shared_ptr<SoLoud::Wav>>(name, wave));
-	std::cout << "Add Sound2";
+	wave->setLooping(loop);
 }
 
-void SoundManager::PlaySound(const std::string& name, bool loop)
+void SoundManager::PlaySound(const std::string& name)
 {
 	std::shared_ptr<SoLoud::Wav>  wave;
 	//if (loop) {

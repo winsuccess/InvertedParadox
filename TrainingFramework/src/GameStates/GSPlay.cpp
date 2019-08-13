@@ -1,5 +1,6 @@
 #include "GSPlay.h"
 
+#include <Application.h>
 #include "Shaders.h"
 #include "Texture.h"
 #include "Models.h"
@@ -16,6 +17,8 @@ GSPlay::GSPlay()
 	enableMovement = true;
 	actionOnce = true;
 	animOnce = true;
+	showMenu = false;
+	playerChoice = 1;
 }
 
 
@@ -55,7 +58,7 @@ void GSPlay::Init()
 	texture = ResourceManagers::GetInstance()->GetTexture("play_portal");
 	std::shared_ptr<DualZone> dz1 = std::make_shared<DualZone>(model, shader, texture,Vector2(462,261),Vector2(154,261),0,2,1);
 	dz1->SetActive(true);
-	dz1->Set2DPosition(-320, 373);
+	dz1->Set2DPosition(-324, 370);
 	dz1->SetSize(154/3, 261/3);
 	m_listZone.push_back(dz1);
 
@@ -123,13 +126,43 @@ void GSPlay::Init()
 
 #pragma endregion
 
-	//Player Name
-	//shader = ResourceManagers::GetInstance()->GetShader("TextShader");
-	//std::shared_ptr<Font> font = ResourceManagers::GetInstance()->GetFont("arialbd");
-	//m_BackGround = std::make_shared<Sprite2D>(model, shader, texture);
-	//m_BackGround->Set2DPosition(screenwidth / 2, screenheight / 2);
-	//m_BackGround->SetSize(screenwidth, screenheight);
+#pragma region MenuScreen
+	//BG
+	texture = ResourceManagers::GetInstance()->GetTexture("menu_blackbg");
+	m_menuPanel = std::make_shared<Sprite2D>(model, shader, texture);
+	m_menuPanel->Set2DPosition(screenwidth/2, screenheight/2);
+	m_menuPanel->SetSize(800, 600);
+
+	//Resume Button
+	texture = ResourceManagers::GetInstance()->GetTexture("menu_rg");
+	std::shared_ptr<Sprite2D> m_resumeButton = std::make_shared<Sprite2D>(model, shader, texture);
+	m_resumeButton->Set2DPosition(screenwidth / 2, 200);
+	m_resumeButton->SetSize(172 * 1.2, 74 * 1.2);
+	m_listMenuButton.push_back(m_resumeButton);
+
+	//Quit to Main Menu Button
+	texture = ResourceManagers::GetInstance()->GetTexture("menu_etmm");
+	std::shared_ptr<Sprite2D> m_exitToMenuButton = std::make_shared<Sprite2D>(model, shader, texture);
+	m_exitToMenuButton->Set2DPosition(screenwidth / 2, 300);
+	m_exitToMenuButton->SetSize(172* 1.2, 74* 1.2);
+	m_listMenuButton.push_back(m_exitToMenuButton);
+
+	//Exit Game Button
+	texture = ResourceManagers::GetInstance()->GetTexture("menu-qg");
+	std::shared_ptr<Sprite2D> m_exitGameButton = std::make_shared<Sprite2D>(model, shader, texture);
+	m_exitGameButton->Set2DPosition(screenwidth / 2, 400);
+	m_exitGameButton->SetSize(172 * 1.2, 74 * 1.2);
+	m_listMenuButton.push_back(m_exitGameButton);
+
+	//Menu Handle
+	texture = ResourceManagers::GetInstance()->GetTexture("menu_handle");
+	m_menuHandle = std::make_shared<Sprite2D>(model, shader, texture);
+	m_menuHandle->Set2DPosition(screenwidth / 2-150, 200);
+	m_menuHandle->SetSize(52, 33);
+#pragma endregion
+
 }
+
 
 void GSPlay::Exit()
 {
@@ -155,13 +188,56 @@ void GSPlay::HandleEvents()
 
 void GSPlay::HandleKeyEvents(int key, bool bIsPressed)
 {
+	if (key == KEY_TAB && bIsPressed) {
+		enableMovement = false;
+		showMenu = true;
+	}
+
+	if (showMenu) {
+			if (key == KEY_DOWN && bIsPressed)
+			{
+				if (playerChoice == 3)
+					playerChoice = 1;
+				else
+					playerChoice++;
+				m_menuHandle->Set2DPosition(m_menuHandle->Get2DPosition().x, m_listMenuButton.at(playerChoice - 1)->Get2DPosition().y);
+				SoundManager::GetInstance()->PlaySound("changesound");
+			}
+			else if (key == KEY_UP && bIsPressed)
+			{
+				if (playerChoice == 1)
+					playerChoice = 3;
+				else
+					playerChoice--;
+				m_menuHandle->Set2DPosition(m_menuHandle->Get2DPosition().x, m_listMenuButton.at(playerChoice - 1)->Get2DPosition().y);
+				SoundManager::GetInstance()->PlaySound("changesound");
+			}
+			else if (key == KEY_SPACEBAR && bIsPressed)
+			{
+				SoundManager::GetInstance()->PlaySound("startgamesound");
+				if (playerChoice == 1)
+				{
+					showMenu = false;
+					enableMovement = true;
+				}
+				else if (playerChoice == 2)
+				{
+					SoundManager::GetInstance()->PauseSound("menumusic");
+					GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Menu);
+				}
+				else {
+					Application::GetInstance()->Exit();
+				}
+			}
+	}
+
 	if (enableMovement) {
 		if (bIsPressed) {
 			if (key == KEY_LEFT) {
 			//	direction = 1;
 				if (animOnce)
 				{
-					m_Player->SetAnim(0, 3, 1);
+					m_Player->SetAnim(0, 3, 0.5);
 					m_Player->SetActive(true);
 					animOnce = false;
 				}
@@ -176,7 +252,7 @@ void GSPlay::HandleKeyEvents(int key, bool bIsPressed)
 			//	direction = 2;
 				if (animOnce)
 				{
-					m_Player->SetAnim(4, 7, 1);
+					m_Player->SetAnim(4, 7, 0.5);
 					m_Player->SetActive(true);
 					animOnce = false;
 				}
@@ -191,7 +267,7 @@ void GSPlay::HandleKeyEvents(int key, bool bIsPressed)
 			//	direction = 3;
 				if (animOnce)
 				{
-					m_Player->SetAnim(8, 12, 1);
+					m_Player->SetAnim(8, 12, 0.5);
 					m_Player->SetActive(true);
 					animOnce = false;
 				}
@@ -201,7 +277,7 @@ void GSPlay::HandleKeyEvents(int key, bool bIsPressed)
 			//	direction = 4;
 				if (animOnce)
 				{
-					m_Player->SetAnim(12, 15, 1);
+					m_Player->SetAnim(12, 15, 0.5);
 					m_Player->SetActive(true);
 					animOnce = false;
 				}
@@ -262,10 +338,10 @@ void GSPlay::Update(float deltaTime)
 			{
 				it->MoveView(0);
 			}
-			}
 		if (actionOnce && !enableMovement) {
-			SoundManager::GetInstance()->PlaySound("entermatchsound",false);
+			SoundManager::GetInstance()->PlaySound("entermatchsound");
 			actionOnce = false;
+		}
 		}
 		if (cooldownTimer <= 0) {
 			GameStateMachine::GetInstance()->ChangeState(StateTypes::STATE_Match);
@@ -294,5 +370,14 @@ void GSPlay::Draw()
 	for (auto it : m_listButton)
 	{
 		it->Draw();
+	}
+
+	//Menu Panel
+	if (showMenu)
+	{
+		m_menuPanel->Draw();
+		for (auto it : m_listMenuButton)
+			it->Draw();
+		m_menuHandle->Draw();
 	}
 }

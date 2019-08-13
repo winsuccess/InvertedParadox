@@ -129,6 +129,11 @@ void Sprite2D::Update(GLfloat deltatime)
 
 
 
+void Sprite2D::SetTexture(std::shared_ptr<Texture>& texture)
+{
+	m_pTexture = texture;
+}
+
 void Sprite2D::SetText(std::string text)
 {
 	m_Text = text;

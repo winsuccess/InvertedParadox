@@ -18,6 +18,7 @@ public:
 	void		Draw() final;
 	void		Update(GLfloat deltatime) override;
 
+	void		SetTexture(std::shared_ptr<Texture>& texture);
 	void		SetText(std::string text);
 	std::string	GetText();
 

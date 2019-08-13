@@ -7,6 +7,8 @@ Character::Character(std::shared_ptr<Models>& model, std::shared_ptr<Shaders>& s
 	m_MP = 50;
 	m_level = 1;
 	m_isAlive = true;
+	isHurt = false;
+	cooldownTimer = 0;
 }
 
 Character::~Character()
@@ -15,6 +17,12 @@ Character::~Character()
 
 bool Character::IsAlive() {
 	return m_isAlive;
+}
+
+void Character::GetHurt()
+{
+	isHurt = true;
+	cooldownTimer = 40;
 }
 
 void Character::SetHp(int x)
@@ -28,7 +36,25 @@ int Character::GetHp()
 }
 
 void Character::Update(GLfloat deltatime) {
-	
+	if (isHurt)
+		Hurt(deltatime);
+}
+
+void Character::Hurt( GLfloat deltaTime)
+{
+	cooldownTimer -= deltaTime;
+	if (cooldownTimer > 30)
+		this->Set2DPosition(this->Get2DPosition().x - 20 * deltaTime, this->Get2DPosition().y);
+	else if (cooldownTimer > 20)
+		this->Set2DPosition(this->Get2DPosition().x + 20 * deltaTime, this->Get2DPosition().y);
+	else if (cooldownTimer > 10)
+	{
+		this->Set2DPosition(this->Get2DPosition().x - 20 * deltaTime, this->Get2DPosition().y);
+	}
+	else
+	{
+		isHurt = false;
+	}
 }
 
 

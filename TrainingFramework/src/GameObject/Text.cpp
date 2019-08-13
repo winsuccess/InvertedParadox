@@ -188,3 +188,4 @@ void Text::Set2DPosition(Vector2 pos)
 
 	CaculateWorldMatrix();
 }
+

@@ -34,10 +34,10 @@ void GSIntro::Init()
 #pragma region  Add Sounds
 
 	SoundManager::GetInstance()->AddSound("introsound");
-	SoundManager::GetInstance()->PlaySound("introsound", false);
+	SoundManager::GetInstance()->PlaySound("introsound");
 
-	SoundManager::GetInstance()->AddSound("menumusic");
-	SoundManager::GetInstance()->AddSound("bgmusic");
+	SoundManager::GetInstance()->AddSound("menumusic", true);
+	SoundManager::GetInstance()->AddSound("bgmusic", true);
 	SoundManager::GetInstance()->AddSound("startgamesound");
 	SoundManager::GetInstance()->AddSound("changesound");
 	SoundManager::GetInstance()->AddSound("selectsound");
